@@ -4,7 +4,7 @@ use ink::primitives::AccountId;
 type Id = u128;
 
 #[ink::trait_definition]
-pub trait psp34 {
+pub trait Psp34 {
     #[ink(message)]
     fn collection_id(&self) -> Id;
 

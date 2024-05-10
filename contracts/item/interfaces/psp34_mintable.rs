@@ -3,7 +3,7 @@
 type Id = u128;
 
 #[ink::trait_definition]
-pub trait psp34_metadata {
+pub trait Psp34Mintable {
     #[ink(message)]
-    fn mint(id: Id) -> Result<(), PSP34Error>;
+    fn mint(&mut self, id: Id) -> Result<(), PSP34Error>;
 }

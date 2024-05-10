@@ -3,7 +3,7 @@
 type Id = u128;
 
 #[ink::trait_definition]
-pub trait psp34_metadata {
+pub trait Psp34Metadata {
     #[ink(message)]
-    fn get_attribute(id: Id, key: Vec<u8>) -> Option<Vec<u8>>;
+    fn get_attribute(&self, id: Id, key: Vec<u8>) -> Option<Vec<u8>>;
 }

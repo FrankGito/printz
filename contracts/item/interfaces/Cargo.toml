@@ -1,23 +1,16 @@
 [package]
-name = "item"
+name = "interfaces"
 version = "0.1.0"
 authors = ["Frank Dierolf <frank_dierolf@web.de>"]
 edition = "2021"
 
 [dependencies]
 ink = { version = "5.0.0", default-features = false }
-interfaces = { path = "./interfaces", default-features = false, features = [
-  "ink-as-dependency",
-] }
-
-[dev-dependencies]
-ink_e2e = { version = "5.0.0" }
 
 [lib]
 path = "lib.rs"
 
 [features]
 default = ["std"]
-std = ["ink/std", "interfaces/std"]
+std = ["ink/std"]
 ink-as-dependency = []
-e2e-tests = []
