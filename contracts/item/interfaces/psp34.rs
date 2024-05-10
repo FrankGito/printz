@@ -1,7 +1,7 @@
 use crate::psp34_error::PSP34Error;
+use crate::Id;
 use ink::prelude::vec::Vec;
 use ink::primitives::AccountId;
-type Id = u128;
 
 #[ink::trait_definition]
 pub trait Psp34 {

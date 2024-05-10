@@ -1,5 +1,5 @@
 use crate::psp34_error::PSP34Error;
-type Id = u128;
+use crate::Id;
 
 #[ink::trait_definition]
 pub trait Psp34Mintable {

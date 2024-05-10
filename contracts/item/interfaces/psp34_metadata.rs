@@ -1,4 +1,4 @@
-type Id = u128;
+use crate::Id;
 use ink::prelude::vec::Vec;
 
 #[ink::trait_definition]
