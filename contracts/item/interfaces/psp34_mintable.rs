@@ -1,5 +1,4 @@
-#![cfg_attr(not(feature = "std"), no_std, no_main)]
-
+use crate::psp34_error::PSP34Error;
 type Id = u128;
 
 #[ink::trait_definition]

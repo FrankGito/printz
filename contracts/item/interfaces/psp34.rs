@@ -1,5 +1,5 @@
-#![cfg_attr(not(feature = "std"), no_std, no_main)]
-
+use crate::psp34_error::PSP34Error;
+use ink::prelude::vec::Vec;
 use ink::primitives::AccountId;
 type Id = u128;
 

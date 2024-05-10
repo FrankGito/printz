@@ -1,10 +1,13 @@
 #![cfg_attr(not(feature = "std"), no_std, no_main)]
 
+pub use interfaces::psp34_error::PSP34Error;
+pub use interfaces::psp34_metadata::Psp34Metadata;
+pub use interfaces::psp34_mintable::Psp34Mintable;
+
 #[ink::contract]
 mod item {
     use ink::prelude::string::String;
     use ink::storage::Mapping;
-    use interfaces::psp34;
 
     type Uri = String;
     #[ink(storage)]
