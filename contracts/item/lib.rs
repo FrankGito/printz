@@ -19,6 +19,7 @@ mod item {
     pub struct Item {
         owned_tokens_count: Mapping<AccountId, u32>,
         total_supply: u128,
+        token_owner: Mapping<Id, AccountId>,
         uri: Uri,
     }
 
@@ -36,26 +37,38 @@ mod item {
     impl Psp34 for Item {
         #[ink(message)]
         fn collection_id(&self) -> Id {
-            5u128
+            todo!();
         }
 
         #[ink(message)]
         fn total_supply(&self) -> u128 {
-            5u128
+            self.total_supply
         }
 
         #[ink(message)]
-        fn balance_of(&self, _owner: AccountId) -> u32 {
-            5u32
+        fn balance_of(&self, owner: AccountId) -> u32 {
+            self.owned_tokens_count.get(owner).unwrap_or(0)
         }
 
         #[ink(message)]
         fn allowance(&self, _owner: AccountId, _operator: AccountId, _id: Option<Id>) -> bool {
-            true
+            todo!();
         }
 
         #[ink(message)]
-        fn transfer(&mut self, _to: AccountId, _id: Id, _data: Vec<u8>) -> Result<(), PSP34Error> {
+        fn transfer(&mut self, to: AccountId, id: Id, _data: Vec<u8>) -> Result<(), PSP34Error> {
+            let owner = self.owner_of(id).ok_or(PSP34Error::TokenNotExists)?;
+
+            if owner == to {
+                return Ok(());
+            }
+
+            let current_count = self.owned_tokens_count.get(owner).unwrap_or_default();
+            let new_balance = current_count - 1;
+            self.owned_tokens_count.insert(owner, &new_balance);
+
+            let next_owner = to;
+            self.token_owner.insert(id, &next_owner);
             Ok(())
         }
 
@@ -66,12 +79,12 @@ mod item {
             _id: Option<Id>,
             _approved: bool,
         ) -> Result<(), PSP34Error> {
-            Ok(())
+            todo!();
         }
 
         #[ink(message)]
-        fn owner_of(&self, _id: Id) -> Option<AccountId> {
-            Some(AccountId::from([0xFF; 32]))
+        fn owner_of(&self, id: Id) -> Option<AccountId> {
+            self.token_owner.get(id)
         }
     }
 }
