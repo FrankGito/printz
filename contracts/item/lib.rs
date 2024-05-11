@@ -1,12 +1,13 @@
 #![cfg_attr(not(feature = "std"), no_std, no_main)]
 
+pub use ::frank_test::frank_test;
 pub use interfaces::psp34::Psp34;
 pub use interfaces::psp34_error::PSP34Error;
 pub use interfaces::psp34_mintable::Psp34Mintable;
 pub use interfaces::Id;
 
 #[ink::contract]
-mod item {
+pub mod item {
     use ink::prelude::string::String;
     use ink::prelude::vec::Vec;
     use ink::storage::Mapping;
@@ -117,56 +118,61 @@ mod item {
             Ok(())
         }
     }
+
     #[cfg(test)]
-    mod tests {
-        use super::*;
-
-        #[ink::test]
-        fn alice_has_zero() {
-            let item = Item::new();
-            let accounts = ink::env::test::default_accounts::<ink::env::DefaultEnvironment>();
-            let alice = accounts.alice;
-            let count = item.owned_tokens_count.get(alice);
-            assert_eq!(count, None);
-        }
-
-        #[ink::test]
-        fn balance_of_alice_is_zero() {
-            let item = Item::new();
-            let accounts = ink::env::test::default_accounts::<ink::env::DefaultEnvironment>();
-            let alice = accounts.alice;
-            let count = item.balance_of(alice);
-            assert_eq!(count, 0u32);
-        }
-
-        #[ink::test]
-        fn total_supply_is_zero() {
-            let item = Item::new();
-            let total_supply = item.total_supply();
-            assert_eq!(total_supply, 0)
-        }
-
-        #[ink::test]
-        fn mint_works() {
-            let mut item = Item::new();
-            let accounts = ink::env::test::default_accounts::<ink::env::DefaultEnvironment>();
-            let alice = accounts.alice;
-            ink::env::test::set_caller::<ink::env::DefaultEnvironment>(alice);
-            let _ = item.mint(0);
-            assert!(item.owner_of(0).unwrap() == alice);
-        }
-
-        #[ink::test]
-        fn transfer_works() {
-            let mut item = Item::new();
-            let accounts = ink::env::test::default_accounts::<ink::env::DefaultEnvironment>();
-            let alice = accounts.alice;
-            let bob = accounts.bob;
-            ink::env::test::set_caller::<ink::env::DefaultEnvironment>(alice);
-            let _ = item.mint(0);
-            let _ = item.transfer(bob, 1u128, Vec::new());
-            let count = item.owned_tokens_count.get(bob);
-            assert!(count.is_none())
-        }
+    mod frank_test {
+        crate::frank_test!(Item, Item::new);
     }
+    // #[cfg(test)]
+    // pub mod tests {
+    //     use super::*;
+    //
+    //     #[ink::test]
+    //     fn alice_has_zero() {
+    //         let item = Item::new();
+    //         let accounts = ink::env::test::default_accounts::<ink::env::DefaultEnvironment>();
+    //         let alice = accounts.alice;
+    //         let count = item.owned_tokens_count.get(alice);
+    //         assert_eq!(count, None);
+    //     }
+    //
+    //     #[ink::test]
+    //     fn balance_of_alice_is_zero() {
+    //         let item = Item::new();
+    //         let accounts = ink::env::test::default_accounts::<ink::env::DefaultEnvironment>();
+    //         let alice = accounts.alice;
+    //         let count = item.balance_of(alice);
+    //         assert_eq!(count, 0u32);
+    //     }
+    //
+    //     #[ink::test]
+    //     fn total_supply_is_zero() {
+    //         let item = Item::new();
+    //         let total_supply = item.total_supply();
+    //         assert_eq!(total_supply, 0)
+    //     }
+    //
+    //     #[ink::test]
+    //     fn mint_works() {
+    //         let mut item = Item::new();
+    //         let accounts = ink::env::test::default_accounts::<ink::env::DefaultEnvironment>();
+    //         let alice = accounts.alice;
+    //         ink::env::test::set_caller::<ink::env::DefaultEnvironment>(alice);
+    //         let _ = item.mint(0);
+    //         assert!(item.owner_of(0).unwrap() == alice);
+    //     }
+    //
+    //     #[ink::test]
+    //     fn transfer_works() {
+    //         let mut item = Item::new();
+    //         let accounts = ink::env::test::default_accounts::<ink::env::DefaultEnvironment>();
+    //         let alice = accounts.alice;
+    //         let bob = accounts.bob;
+    //         ink::env::test::set_caller::<ink::env::DefaultEnvironment>(alice);
+    //         let _ = item.mint(0);
+    //         let _ = item.transfer(bob, 1u128, Vec::new());
+    //         let count = item.owned_tokens_count.get(bob);
+    //         assert!(count.is_none())
+    //     }
+    // }
 }

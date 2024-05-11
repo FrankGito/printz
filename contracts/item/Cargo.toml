@@ -9,6 +9,9 @@ ink = { version = "5.0.0", default-features = false }
 interfaces = { path = "./interfaces", default-features = false, features = [
   "ink-as-dependency",
 ] }
+frank_test = { path = "./frank_test", default-features = false, features = [
+  "ink-as-dependency",
+] }
 
 # [dev-dependencies]
 # ink_e2e = { version = "5.0.0" }
@@ -18,6 +21,6 @@ path = "lib.rs"
 
 [features]
 default = ["std"]
-std = ["ink/std", "interfaces/std"]
+std = ["ink/std", "interfaces/std", "frank_test/std"]
 ink-as-dependency = []
 # e2e-tests = []
