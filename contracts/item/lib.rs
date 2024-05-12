@@ -126,7 +126,6 @@ pub mod item {
                 self.approvals.remove((caller, operator, id.as_ref()));
             }
             Ok(())
-            // todo!()
         }
 
         #[ink(message)]
