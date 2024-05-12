@@ -71,7 +71,6 @@ pub mod item {
         fn allowance(&self, owner: AccountId, operator: AccountId, id: Option<Id>) -> bool {
             self.approvals.get((owner, operator, &None)).is_some()
                 || id.is_some() && self.approvals.get((owner, operator, id)).is_some()
-            // todo!()
         }
 
         #[ink(message)]

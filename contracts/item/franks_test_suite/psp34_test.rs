@@ -75,6 +75,31 @@ macro_rules! unit_test {
                 // Bob owns token 1
                 assert_eq!(token.balance_of(accounts.bob), 1);
             }
+
+            #[ink::test]
+            fn allowance_works() {
+                let accounts = default_accounts::<E>();
+                let mut token = $constructor();
+                //Alice mints Token 1
+                set_caller::<E>(accounts.alice);
+                assert_eq!(token.mint(1u128), Ok(()));
+                //Alice is owner
+                assert_eq!(token.balance_of(accounts.alice), 1u32);
+                //Alice has no allowance
+                assert_eq!(
+                    token.allowance(accounts.alice, accounts.alice, Some(1)),
+                    false
+                );
+                //Bob has no allowance
+                assert_eq!(
+                    token.allowance(accounts.alice, accounts.bob, Some(1)),
+                    false
+                );
+                //Alice approves Bob
+                assert_eq!(token.approve(accounts.bob, Some(1), true), Ok(()));
+                //Bob has allowance
+                assert_eq!(token.allowance(accounts.alice, accounts.bob, Some(1)), true);
+            }
         }
     };
 }
