@@ -84,11 +84,13 @@ pub mod item {
             }
             // Decrease owned_tokens_count
             let current_count_caller = self.owned_tokens_count.get(caller).unwrap_or(0);
+            ink::env::debug_println!("Thats the current_count_caller {}", current_count_caller);
             self.owned_tokens_count
                 .insert(caller, &current_count_caller.saturating_sub(0));
             // set new token_owner
             self.token_owner.insert(id, &to);
-            let current_count_to = self.owned_tokens_count.get(caller).unwrap_or(0);
+            let current_count_to = self.owned_tokens_count.get(to).unwrap_or(0);
+            ink::env::debug_println!("Thats the current_count_to {}", current_count_to);
             self.owned_tokens_count
                 .insert(to, &current_count_to.saturating_add(1));
             Ok(())

@@ -3,11 +3,12 @@ macro_rules! unit_test {
     ($contract:ident, $constructor:expr) => {
         mod psp34_unit_tests {
             use super::super::*;
+            use ink::env::test::set_caller;
             use ink::env::{test::*, DefaultEnvironment as E};
+
             #[ink::test]
             fn alice_has_zero() {
-                // let mut item = $constructor(0, 100);
-                let item = Item::new();
+                let mut item = $constructor();
                 let accounts = ink::env::test::default_accounts::<ink::env::DefaultEnvironment>();
                 let alice = accounts.alice;
                 let count = item.owned_tokens_count.get(alice);
@@ -16,8 +17,7 @@ macro_rules! unit_test {
 
             #[ink::test]
             fn balance_of_alice_is_zero() {
-                // let mut item = $constructor(0, 100);
-                let item = Item::new();
+                let mut item = $constructor();
                 let accounts = ink::env::test::default_accounts::<ink::env::DefaultEnvironment>();
                 let alice = accounts.alice;
                 let count = item.balance_of(alice);
@@ -26,8 +26,7 @@ macro_rules! unit_test {
 
             #[ink::test]
             fn total_supply_is_zero() {
-                // let mut item = $constructor(0, 100);
-                let item = Item::new();
+                let mut item = $constructor();
                 let total_supply = item.total_supply();
                 assert_eq!(total_supply, 0)
             }
@@ -53,13 +52,10 @@ macro_rules! unit_test {
                 let mut token = $constructor();
                 // Create token Id 1.
                 assert_eq!(token.mint(1), Ok(()));
-                // The first Transfer event takes place
-                // assert_eq!(1, recorded_events().count());
                 // Alice owns 1 token.
                 assert_eq!(token.balance_of(accounts.alice), 1);
                 // Alice owns token Id 1.
                 assert_eq!(token.owner_of(1), Some(accounts.alice));
-                // Cannot create  token Id if it exists.
                 // Bob cannot own token Id 1.
                 assert_eq!(token.mint(1), Err(PSP34Error::TokenExists));
             }
@@ -67,32 +63,17 @@ macro_rules! unit_test {
             #[ink::test]
             fn transfer_works() {
                 let accounts = default_accounts::<E>();
-                // Create a new contract instance.
                 let mut token = $constructor();
-                // Create token Id 1 for Alice
-                assert_eq!(token.mint(1), Ok(()));
+                set_caller::<E>(accounts.alice);
+                assert_eq!(token.mint(1u128), Ok(()));
                 // Alice owns token 1
-                assert_eq!(token.balance_of(accounts.alice), 1);
+                assert_eq!(token.balance_of(accounts.alice), 1u32);
                 // Bob does not owns any token
-                assert_eq!(token.balance_of(accounts.bob), 0);
-                // The first Transfer event takes place
-                // assert_eq!(1, recorded_events().count());
+                assert_eq!(token.balance_of(accounts.bob), 0u32);
                 // Alice transfers token 1 to Bob
-                assert_eq!(token.transfer(accounts.bob, 1, Vec::new()), Ok(()));
-                // The second Transfer event takes place
-                // assert_eq!(2, recorded_events().count());
+                assert_eq!(token.transfer(accounts.bob, 1u128, Vec::new()), Ok(()));
                 // Bob owns token 1
                 assert_eq!(token.balance_of(accounts.bob), 1);
-
-                // let mut item = Item::new();
-                // let accounts = ink::env::test::default_accounts::<ink::env::DefaultEnvironment>();
-                // let alice = accounts.alice;
-                // let bob = accounts.bob;
-                // ink::env::test::set_caller::<ink::env::DefaultEnvironment>(alice);
-                // let _ = item.mint(0);
-                // let _ = item.transfer(bob, 1u128, Vec::new());
-                // let count = item.owned_tokens_count.get(bob);
-                // assert!(count.is_none())
             }
         }
     };

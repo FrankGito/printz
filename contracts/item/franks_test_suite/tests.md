@@ -31,7 +31,7 @@ Invalid Approve
 - Person B can not transfer
 - Person A owns Token
 
-### Lis of all unit tests from Cardinal
+### List of all unit tests from Cardinal
 
 - mint_works()
 - mint_existing_should_fail()
