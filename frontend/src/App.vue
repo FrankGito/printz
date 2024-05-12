@@ -3,6 +3,14 @@ import * as THREE from "three";
 import { useControls, TresLeches } from "@tresjs/leches";
 import { onMounted, ref } from "vue";
 import { watchEffect } from "vue";
+import usePsp34 from "./composables/usePsp34.ts";
+
+const {
+  reactiveVariable,
+  updateReactiveVariable,
+  simpleRef,
+  incrementSimpleRef,
+} = usePsp34();
 
 const { debugMessage, debugBtn } = useControls({
   debugMessage: "I`m a Debug UI",
@@ -15,6 +23,7 @@ const { debugMessage, debugBtn } = useControls({
     },
   },
 });
+
 watchEffect(() => {
   console.log("---------FRANK---------");
   console.log("I changed debug Message");
@@ -24,8 +33,17 @@ watchEffect(() => {
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 
 onMounted(() => {
-  console.log(debugMessage);
-  console.log(debugBtn);
+  console.log("--------------------");
+  console.log("Use reactiveVariable");
+  console.log(reactiveVariable.value);
+  updateReactiveVariable("Buff Buff Buff");
+  console.log(reactiveVariable.value);
+  console.log("--------------------");
+  console.log("Use simpleRef");
+  console.log(simpleRef.value);
+  incrementSimpleRef();
+  console.log(simpleRef.value);
+
   const canvas = canvasRef.value;
 
   if (canvas) {
