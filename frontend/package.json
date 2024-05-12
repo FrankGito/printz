@@ -11,6 +11,7 @@
     "type-check": "vue-tsc --build --force"
   },
   "dependencies": {
+    "@tresjs/leches": "^0.14.0",
     "@types/three": "^0.164.0",
     "three": "^0.164.1",
     "vue": "^3.4.21"

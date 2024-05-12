@@ -1,11 +1,31 @@
 <script setup lang="ts">
 import * as THREE from "three";
-
+import { useControls, TresLeches } from "@tresjs/leches";
 import { onMounted, ref } from "vue";
+import { watchEffect } from "vue";
+
+const { debugMessage, debugBtn } = useControls({
+  debugMessage: "I`m a Debug UI",
+  debugBtn: {
+    label: "Debug Button",
+    type: "button",
+    size: "lg",
+    onClick: (value) => {
+      console.log(value);
+    },
+  },
+});
+watchEffect(() => {
+  console.log("---------FRANK---------");
+  console.log("I changed debug Message");
+  console.log(debugMessage.value.value);
+});
 
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 
 onMounted(() => {
+  console.log(debugMessage);
+  console.log(debugBtn);
   const canvas = canvasRef.value;
 
   if (canvas) {
@@ -38,6 +58,7 @@ onMounted(() => {
 </script>
 
 <template>
+  <TresLeches />
   <div class="card">
     <canvas id="canvas" ref="canvasRef" width="300px" height="300px"></canvas>
     <button class="mint-button">
