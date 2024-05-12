@@ -19,27 +19,42 @@ pub mod item {
     #[ink(storage)]
     #[derive(Default)]
     pub struct Item {
+        collection_id: Id,
         owned_tokens_count: Mapping<AccountId, u32>,
         total_supply: u128,
         token_owner: Mapping<Id, AccountId>,
-        uri: Uri,
+        uris: Mapping<Id, Uri>,
+        approvals: Mapping<(AccountId, AccountId, Option<Id>), ()>,
     }
 
     impl Item {
         #[ink(constructor)]
         pub fn new() -> Self {
-            Default::default()
+            // Default::default()
+            Self {
+                collection_id: 0,
+                owned_tokens_count: Mapping::new(),
+                total_supply: 0,
+                token_owner: Mapping::new(),
+                uris: Mapping::new(),
+                approvals: Mapping::new(),
+            }
         }
+
         #[ink(message)]
-        pub fn get_uri(&self) -> Uri {
-            self.uri.clone()
+        pub fn get_uri(&self, id: Id) -> Result<Uri, PSP34Error> {
+            if self.uris.get(id).is_some() {
+                Ok(self.uris.get(id).unwrap())
+            } else {
+                Err(PSP34Error::TokenNotExists)
+            }
         }
     }
 
     impl Psp34 for Item {
         #[ink(message)]
         fn collection_id(&self) -> Id {
-            todo!();
+            self.collection_id
         }
 
         #[ink(message)]
@@ -53,8 +68,10 @@ pub mod item {
         }
 
         #[ink(message)]
-        fn allowance(&self, _owner: AccountId, _operator: AccountId, _id: Option<Id>) -> bool {
-            todo!();
+        fn allowance(&self, owner: AccountId, operator: AccountId, id: Option<Id>) -> bool {
+            self.approvals.get((owner, operator, &None)).is_some()
+                || id.is_some() && self.approvals.get((owner, operator, id)).is_some()
+            // todo!()
         }
 
         #[ink(message)]
@@ -80,11 +97,36 @@ pub mod item {
         #[ink(message)]
         fn approve(
             &mut self,
-            _operator: AccountId,
-            _id: Option<Id>,
-            _approved: bool,
+            operator: AccountId,
+            id: Option<Id>,
+            approved: bool,
         ) -> Result<(), PSP34Error> {
-            todo!();
+            let mut caller = self.env().caller();
+            if let Some(id) = &id {
+                let owner = self.owner_of(*id).ok_or(PSP34Error::TokenNotExists)?;
+                if approved && owner == operator {
+                    return Err(PSP34Error::SelfApprove);
+                }
+
+                if owner != caller && !self.allowance(owner, caller, None) {
+                    return Err(PSP34Error::NotApproved);
+                }
+
+                if !approved && self.allowance(owner, operator, None) {
+                    return Err(PSP34Error::Custom(String::from(
+                    "Cannot revoke approval for a single token, when the operator has approval for all tokens."
+                )));
+                }
+                caller = owner;
+            }
+
+            if approved {
+                self.approvals.insert((caller, operator, id.as_ref()), &());
+            } else {
+                self.approvals.remove((caller, operator, id.as_ref()));
+            }
+            Ok(())
+            // todo!()
         }
 
         #[ink(message)]

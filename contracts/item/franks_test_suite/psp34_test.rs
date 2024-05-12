@@ -6,6 +6,7 @@ macro_rules! unit_test {
             use ink::env::{test::*, DefaultEnvironment as E};
             #[ink::test]
             fn alice_has_zero() {
+                // let mut item = $constructor(0, 100);
                 let item = Item::new();
                 let accounts = ink::env::test::default_accounts::<ink::env::DefaultEnvironment>();
                 let alice = accounts.alice;
@@ -15,6 +16,7 @@ macro_rules! unit_test {
 
             #[ink::test]
             fn balance_of_alice_is_zero() {
+                // let mut item = $constructor(0, 100);
                 let item = Item::new();
                 let accounts = ink::env::test::default_accounts::<ink::env::DefaultEnvironment>();
                 let alice = accounts.alice;
@@ -24,6 +26,7 @@ macro_rules! unit_test {
 
             #[ink::test]
             fn total_supply_is_zero() {
+                // let mut item = $constructor(0, 100);
                 let item = Item::new();
                 let total_supply = item.total_supply();
                 assert_eq!(total_supply, 0)
@@ -45,6 +48,7 @@ macro_rules! unit_test {
             }
             #[ink::test]
             fn transfer_works() {
+                // let mut item = $constructor(0, 100);
                 let mut item = Item::new();
                 let accounts = ink::env::test::default_accounts::<ink::env::DefaultEnvironment>();
                 let alice = accounts.alice;
