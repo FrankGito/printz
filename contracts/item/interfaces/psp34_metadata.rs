@@ -1,4 +1,4 @@
-use crate::Id;
+use crate::id::Id;
 use ink::prelude::vec::Vec;
 
 #[ink::trait_definition]

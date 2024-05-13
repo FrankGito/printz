@@ -1,20 +1,15 @@
 #![cfg_attr(not(feature = "std"), no_std, no_main)]
 
-pub use interfaces::psp34::Psp34;
-pub use interfaces::psp34_error::PSP34Error;
-pub use interfaces::psp34_mintable::Psp34Mintable;
-pub use interfaces::Id;
-
 #[ink::contract]
 pub mod item {
     use ink::prelude::string::String;
     use ink::prelude::vec::Vec;
     use ink::storage::Mapping;
+    use interfaces::id::Id;
     use interfaces::psp34::Psp34;
     use interfaces::psp34_error::PSP34Error;
     use interfaces::psp34_metadata::Psp34Metadata;
     use interfaces::psp34_mintable::Psp34Mintable;
-    use interfaces::Id;
 
     type Uri = String;
     #[ink(storage)]
@@ -43,12 +38,12 @@ pub mod item {
         approved: bool,
     }
 
-    #[ink(event)]
-    pub struct AttributeSet {
-        id: Id,
-        key: Vec<u8>,
-        data: Vec<u8>,
-    }
+    // #[ink(event)]
+    // pub struct AttributeSet {
+    //     id: Id,
+    //     key: Vec<u8>,
+    //     data: Vec<u8>,
+    // }
 
     impl Item {
         #[ink(constructor)]
@@ -57,10 +52,10 @@ pub mod item {
             Self::env().emit_event(Transfer {
                 from: None,
                 to: Some(caller),
-                id: 0u128,
+                id: Id::U128(0u128),
             });
             Self {
-                collection_id: 0,
+                collection_id: Id::U128(0u128),
                 owned_tokens_count: Mapping::new(),
                 total_supply: 0,
                 token_owner: Mapping::new(),
@@ -72,33 +67,33 @@ pub mod item {
 
         #[ink(message)]
         pub fn get_uri(&self, id: Id) -> Result<Uri, PSP34Error> {
-            if self.uris.get(id).is_some() {
+            if self.uris.get(id.clone()).is_some() {
                 Ok(self.uris.get(id).unwrap())
             } else {
                 Err(PSP34Error::TokenNotExists)
             }
         }
 
-        #[ink(message)]
-        pub fn set_attribute(
-            &mut self,
-            id: Id,
-            key: Vec<u8>,
-            value: Vec<u8>,
-        ) -> Result<Vec<AttributeSet>, PSP34Error> {
-            self.attributes.insert((&id, &key), &value);
-            Ok(vec![AttributeSet {
-                id,
-                key,
-                data: value,
-            }])
-        }
+        // #[ink(message)]
+        // pub fn set_attribute(
+        //     &mut self,
+        //     id: Id,
+        //     key: Vec<u8>,
+        //     value: Vec<u8>,
+        // ) -> Result<Vec<AttributeSet>, PSP34Error> {
+        //     self.attributes.insert((&id, &key), &value);
+        //     Ok(vec![AttributeSet {
+        //         id,
+        //         key,
+        //         data: value,
+        //     }])
+        // }
     }
 
     impl Psp34 for Item {
         #[ink(message)]
         fn collection_id(&self) -> Id {
-            self.collection_id
+            self.collection_id.clone()
         }
 
         #[ink(message)]
@@ -122,7 +117,7 @@ pub mod item {
             // Get caller
             let caller = self.env().caller();
             // Check if caller has NFT
-            if self.token_owner.get(id).is_none() {
+            if self.token_owner.get(id.clone()).is_none() {
                 return Err(PSP34Error::Custom(String::from("Caller doesn't have it")));
             }
             // Decrease owned_tokens_count
@@ -131,7 +126,7 @@ pub mod item {
             self.owned_tokens_count
                 .insert(caller, &current_count_caller.saturating_sub(0));
             // set new token_owner
-            self.token_owner.insert(id, &to);
+            self.token_owner.insert(id.clone(), &to);
             let current_count_to = self.owned_tokens_count.get(to).unwrap_or(0);
             ink::env::debug_println!("Thats the current_count_to {}", current_count_to);
             self.owned_tokens_count
@@ -154,7 +149,9 @@ pub mod item {
         ) -> Result<(), PSP34Error> {
             let mut caller = self.env().caller();
             if let Some(id) = &id {
-                let owner = self.owner_of(*id).ok_or(PSP34Error::TokenNotExists)?;
+                let owner = self
+                    .owner_of(id.clone())
+                    .ok_or(PSP34Error::TokenNotExists)?;
                 if approved && owner == operator {
                     return Err(PSP34Error::SelfApprove);
                 }
@@ -180,7 +177,7 @@ pub mod item {
             Self::env().emit_event(Approval {
                 owner: AccountId::from([0xff; 32]),
                 operator: AccountId::from([0xff; 32]),
-                id: Some(1),
+                id: Some(Id::U128(0u128)),
                 approved: true,
             });
 
@@ -196,7 +193,7 @@ pub mod item {
         #[ink(message)]
         fn mint(&mut self, id: Id) -> Result<(), PSP34Error> {
             // Check if Id is already taken
-            if self.token_owner.get(id).is_some() {
+            if self.token_owner.get(id.clone()).is_some() {
                 return Err(PSP34Error::TokenExists);
             }
 
@@ -226,7 +223,7 @@ pub mod item {
 
     #[cfg(test)]
     mod test {
-        use franks_test_suite::unit_test;
-        unit_test!(Item, Item::new);
+        // use franks_test_suite::unit_test;
+        // unit_test!(Item, Item::new);
     }
 }

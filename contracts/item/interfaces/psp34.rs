@@ -1,5 +1,5 @@
+use crate::id::Id;
 use crate::psp34_error::PSP34Error;
-use crate::Id;
 use ink::prelude::vec::Vec;
 use ink::primitives::AccountId;
 
