@@ -27,10 +27,36 @@ pub mod item {
         approvals: Mapping<(AccountId, AccountId, Option<Id>), ()>,
     }
 
+    #[ink(event)]
+    pub struct Transfer {
+        from: Option<AccountId>,
+        to: Option<AccountId>,
+        id: Id,
+    }
+    #[ink(event)]
+    pub struct Approval {
+        owner: AccountId,
+        operator: AccountId,
+        id: Option<Id>,
+        approved: bool,
+    }
+
+    #[ink(event)]
+    pub struct AttributeSet {
+        id: Id,
+        key: Vec<u8>,
+        data: Vec<u8>,
+    }
+
     impl Item {
         #[ink(constructor)]
         pub fn new() -> Self {
-            // Default::default()
+            let caller = Self::env().caller();
+            Self::env().emit_event(Transfer {
+                from: None,
+                to: Some(caller),
+                id: 0u128,
+            });
             Self {
                 collection_id: 0,
                 owned_tokens_count: Mapping::new(),
@@ -92,6 +118,7 @@ pub mod item {
             ink::env::debug_println!("Thats the current_count_to {}", current_count_to);
             self.owned_tokens_count
                 .insert(to, &current_count_to.saturating_add(1));
+
             Ok(())
         }
 
