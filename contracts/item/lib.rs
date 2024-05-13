@@ -12,6 +12,7 @@ pub mod item {
     use ink::storage::Mapping;
     use interfaces::psp34::Psp34;
     use interfaces::psp34_error::PSP34Error;
+    use interfaces::psp34_metadata::Psp34Metadata;
     use interfaces::psp34_mintable::Psp34Mintable;
     use interfaces::Id;
 
@@ -25,6 +26,7 @@ pub mod item {
         token_owner: Mapping<Id, AccountId>,
         uris: Mapping<Id, Uri>,
         approvals: Mapping<(AccountId, AccountId, Option<Id>), ()>,
+        attributes: Mapping<(Id, Vec<u8>), Vec<u8>>,
     }
 
     #[ink(event)]
@@ -64,6 +66,7 @@ pub mod item {
                 token_owner: Mapping::new(),
                 uris: Mapping::new(),
                 approvals: Mapping::new(),
+                attributes: Mapping::new(),
             }
         }
 
@@ -74,6 +77,21 @@ pub mod item {
             } else {
                 Err(PSP34Error::TokenNotExists)
             }
+        }
+
+        #[ink(message)]
+        pub fn set_attribute(
+            &mut self,
+            id: Id,
+            key: Vec<u8>,
+            value: Vec<u8>,
+        ) -> Result<Vec<AttributeSet>, PSP34Error> {
+            self.attributes.insert((&id, &key), &value);
+            Ok(vec![AttributeSet {
+                id,
+                key,
+                data: value,
+            }])
         }
     }
 
@@ -119,6 +137,11 @@ pub mod item {
             self.owned_tokens_count
                 .insert(to, &current_count_to.saturating_add(1));
 
+            Self::env().emit_event(Transfer {
+                from: Some(caller),
+                to: Some(to),
+                id,
+            });
             Ok(())
         }
 
@@ -153,6 +176,14 @@ pub mod item {
             } else {
                 self.approvals.remove((caller, operator, id.as_ref()));
             }
+
+            Self::env().emit_event(Approval {
+                owner: AccountId::from([0xff; 32]),
+                operator: AccountId::from([0xff; 32]),
+                id: Some(1),
+                approved: true,
+            });
+
             Ok(())
         }
 
@@ -184,6 +215,12 @@ pub mod item {
             // add Owner
             self.token_owner.insert(id, &caller);
             Ok(())
+        }
+    }
+    impl Psp34Metadata for Item {
+        #[ink(message)]
+        fn get_attribute(&self, id: Id, key: Vec<u8>) -> Option<Vec<u8>> {
+            self.attributes.get((&id, &key))
         }
     }
 
