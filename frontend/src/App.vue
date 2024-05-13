@@ -5,6 +5,7 @@ import { onMounted, ref } from "vue";
 import { watchEffect } from "vue";
 import usePsp34 from "./composables/usePsp34.ts";
 import { getOwnerOf } from "./composables/usePsp34.ts";
+import { BN } from "@polkadot/util";
 
 const {
   reactiveVariable,
@@ -34,6 +35,7 @@ watchEffect(() => {
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 
 onMounted(() => {
+  getOwnerOf(new BN(0))
   console.log("--------------------");
   console.log("Use reactiveVariable");
   console.log(reactiveVariable.value);

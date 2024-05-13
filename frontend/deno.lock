@@ -4,14 +4,15 @@
     "specifiers": {
       "npm:@polkadot/api-contract@latest": "npm:@polkadot/api-contract@11.0.3_@polkadot+util@12.6.2",
       "npm:@polkadot/api@latest": "npm:@polkadot/api@11.0.3_@polkadot+util@12.6.2_@polkadot+util-crypto@12.6.2__@polkadot+util@12.6.2__@polkadot+x-randomvalues@12.6.2___@polkadot+util@12.6.2___@polkadot+wasm-util@7.3.2____@polkadot+util@12.6.2__@polkadot+wasm-util@7.3.2___@polkadot+util@12.6.2",
+      "npm:@polkadot/types": "npm:@polkadot/types@11.0.3_@polkadot+util@12.6.2_@polkadot+util-crypto@12.6.2__@polkadot+util@12.6.2__@polkadot+x-randomvalues@12.6.2___@polkadot+util@12.6.2___@polkadot+wasm-util@7.3.2____@polkadot+util@12.6.2__@polkadot+wasm-util@7.3.2___@polkadot+util@12.6.2",
+      "npm:@polkadot/types@latest": "npm:@polkadot/types@11.0.3_@polkadot+util@12.6.2_@polkadot+util-crypto@12.6.2__@polkadot+util@12.6.2__@polkadot+x-randomvalues@12.6.2___@polkadot+util@12.6.2___@polkadot+wasm-util@7.3.2____@polkadot+util@12.6.2__@polkadot+wasm-util@7.3.2___@polkadot+util@12.6.2",
       "npm:@polkadot/util@latest": "npm:@polkadot/util@12.6.2",
       "npm:@tresjs/leches@latest": "npm:@tresjs/leches@0.14.0_vue@3.4.27_vite@5.2.11",
-      "npm:@types/three@latest": "npm:@types/three@0.164.0",
-      "npm:@vitejs/plugin-vue@^5.0.4": "npm:@vitejs/plugin-vue@5.0.4_vite@5.2.11_vue@3.4.27",
+      "npm:@vitejs/plugin-vue@latest": "npm:@vitejs/plugin-vue@5.0.4_vite@5.2.11_vue@3.4.27",
       "npm:three@latest": "npm:three@0.164.1",
       "npm:vite": "npm:vite@5.2.11",
-      "npm:vite@^5.2.10": "npm:vite@5.2.11",
-      "npm:vue@^3.4.23": "npm:vue@3.4.27"
+      "npm:vite@latest": "npm:vite@5.2.11",
+      "npm:vue@latest": "npm:vue@3.4.27"
     },
     "npm": {
       "@babel/parser@7.24.5": {
@@ -239,6 +240,10 @@
           "tslib": "tslib@2.6.2"
         }
       },
+      "@polkadot/keyring@12.6.2": {
+        "integrity": "sha512-O3Q7GVmRYm8q7HuB3S0+Yf/q/EB2egKRRU3fv9b3B7V+A52tKzA+vIwEmNVaD1g5FKW9oB97rmpggs0zaKFqHw==",
+        "dependencies": {}
+      },
       "@polkadot/keyring@12.6.2_@polkadot+util@12.6.2_@polkadot+util-crypto@12.6.2__@polkadot+util@12.6.2__@polkadot+x-randomvalues@12.6.2___@polkadot+util@12.6.2___@polkadot+wasm-util@7.3.2____@polkadot+util@12.6.2__@polkadot+wasm-util@7.3.2___@polkadot+util@12.6.2": {
         "integrity": "sha512-O3Q7GVmRYm8q7HuB3S0+Yf/q/EB2egKRRU3fv9b3B7V+A52tKzA+vIwEmNVaD1g5FKW9oB97rmpggs0zaKFqHw==",
         "dependencies": {
@@ -306,7 +311,7 @@
       "@polkadot/types-augment@11.0.3_@polkadot+util@12.6.2_@polkadot+util-crypto@12.6.2__@polkadot+util@12.6.2__@polkadot+x-randomvalues@12.6.2___@polkadot+util@12.6.2___@polkadot+wasm-util@7.3.2____@polkadot+util@12.6.2__@polkadot+wasm-util@7.3.2___@polkadot+util@12.6.2": {
         "integrity": "sha512-/LXP/LDDr59ZigfeYXtYWrIr4qttYwlkEV7EMUnse5zYWAGH8mkras0Um7gX7kd/GndJAHvXAbbSdrduhg/uNA==",
         "dependencies": {
-          "@polkadot/types": "@polkadot/types@11.0.3_@polkadot+util@12.6.2_@polkadot+util-crypto@12.6.2__@polkadot+util@12.6.2__@polkadot+x-randomvalues@12.6.2___@polkadot+util@12.6.2___@polkadot+wasm-util@7.3.2____@polkadot+util@12.6.2__@polkadot+wasm-util@7.3.2___@polkadot+util@12.6.2",
+          "@polkadot/types": "@polkadot/types@11.0.3",
           "@polkadot/types-codec": "@polkadot/types-codec@11.0.3",
           "@polkadot/util": "@polkadot/util@12.6.2",
           "tslib": "tslib@2.6.2"
@@ -346,6 +351,19 @@
           "tslib": "tslib@2.6.2"
         }
       },
+      "@polkadot/types@11.0.3": {
+        "integrity": "sha512-7AGUaObaGKZntOzHX4IRKj+K1AjZpYBgrivnY73tqGCp7biByn8Ht6a74xFngGfay1yRrx7eS3NOeIpp4nKhrw==",
+        "dependencies": {
+          "@polkadot/keyring": "@polkadot/keyring@12.6.2",
+          "@polkadot/types-augment": "@polkadot/types-augment@11.0.3",
+          "@polkadot/types-codec": "@polkadot/types-codec@11.0.3",
+          "@polkadot/types-create": "@polkadot/types-create@11.0.3",
+          "@polkadot/util": "@polkadot/util@12.6.2",
+          "@polkadot/util-crypto": "@polkadot/util-crypto@12.6.2",
+          "rxjs": "rxjs@7.8.1",
+          "tslib": "tslib@2.6.2"
+        }
+      },
       "@polkadot/types@11.0.3_@polkadot+util@12.6.2_@polkadot+util-crypto@12.6.2__@polkadot+util@12.6.2__@polkadot+x-randomvalues@12.6.2___@polkadot+util@12.6.2___@polkadot+wasm-util@7.3.2____@polkadot+util@12.6.2__@polkadot+wasm-util@7.3.2___@polkadot+util@12.6.2": {
         "integrity": "sha512-7AGUaObaGKZntOzHX4IRKj+K1AjZpYBgrivnY73tqGCp7biByn8Ht6a74xFngGfay1yRrx7eS3NOeIpp4nKhrw==",
         "dependencies": {
@@ -357,6 +375,14 @@
           "@polkadot/util-crypto": "@polkadot/util-crypto@12.6.2_@polkadot+util@12.6.2_@polkadot+x-randomvalues@12.6.2__@polkadot+util@12.6.2__@polkadot+wasm-util@7.3.2___@polkadot+util@12.6.2_@polkadot+wasm-util@7.3.2__@polkadot+util@12.6.2",
           "rxjs": "rxjs@7.8.1",
           "tslib": "tslib@2.6.2"
+        }
+      },
+      "@polkadot/util-crypto@12.6.2": {
+        "integrity": "sha512-FEWI/dJ7wDMNN1WOzZAjQoIcCP/3vz3wvAp5QQm+lOrzOLj0iDmaIGIcBkz8HVm3ErfSe/uKP0KS4jgV/ib+Mg==",
+        "dependencies": {
+          "@noble/curves": "@noble/curves@1.4.0",
+          "@noble/hashes": "@noble/hashes@1.4.0",
+          "@polkadot/networks": "@polkadot/networks@12.6.2"
         }
       },
       "@polkadot/util-crypto@12.6.2_@polkadot+util@12.6.2_@polkadot+x-randomvalues@12.6.2__@polkadot+util@12.6.2__@polkadot+wasm-util@7.3.2___@polkadot+util@12.6.2_@polkadot+wasm-util@7.3.2__@polkadot+util@12.6.2": {
@@ -605,10 +631,6 @@
           "vue": "vue@3.4.27"
         }
       },
-      "@tweenjs/tween.js@23.1.2": {
-        "integrity": "sha512-kMCNaZCJugWI86xiEHaY338CU5JpD0B97p1j1IKNn/Zto8PgACjQx0UxbHjmOcLl/dDOBnItwD07KmCs75pxtQ==",
-        "dependencies": {}
-      },
       "@types/bn.js@5.1.5": {
         "integrity": "sha512-V46N0zwKRF5Q00AZ6hWtN0T8gGmDUaUzLWQvHFo5yThtVwK/VCenFY3wXVbOvNfajEpsTfQM4IN9k/d6gUVX3A==",
         "dependencies": {
@@ -623,26 +645,8 @@
         "integrity": "sha512-IXl7o+R9iti9eBW4Wg2hx1xQDig183jj7YLn8F7udNceyfkbn1ZxmzZXuak20gR40D7pIkIY1kYGx5VIGbaHKA==",
         "dependencies": {}
       },
-      "@types/stats.js@0.17.3": {
-        "integrity": "sha512-pXNfAD3KHOdif9EQXZ9deK82HVNaXP5ZIF5RP2QG6OQFNTaY2YIetfrE9t528vEreGQvEPRDDc8muaoYeK0SxQ==",
-        "dependencies": {}
-      },
-      "@types/three@0.164.0": {
-        "integrity": "sha512-SFDofn9dJVrE+1DKta7xj7lc4ru7B3S3yf10NsxOserW57aQlB6GxtAS1UK5To3LfEMN5HUHMu3n5v+M5rApgA==",
-        "dependencies": {
-          "@tweenjs/tween.js": "@tweenjs/tween.js@23.1.2",
-          "@types/stats.js": "@types/stats.js@0.17.3",
-          "@types/webxr": "@types/webxr@0.5.16",
-          "fflate": "fflate@0.8.2",
-          "meshoptimizer": "meshoptimizer@0.18.1"
-        }
-      },
       "@types/web-bluetooth@0.0.20": {
         "integrity": "sha512-g9gZnnXVq7gM7v3tJCWV/qw7w+KeOlSHAhgF9RytFyifW6AF61hdT2ucrYhPq9hLs5JIryeupHV3qGk95dH9ow==",
-        "dependencies": {}
-      },
-      "@types/webxr@0.5.16": {
-        "integrity": "sha512-0E0Cl84FECtzrB4qG19TNTqpunw0F1YF0QZZnFMF6pDw1kNKJtrlTKlVB34stGIsHbZsYQ7H0tNjPfZftkHHoA==",
         "dependencies": {}
       },
       "@unocss/core@0.57.7": {
@@ -819,10 +823,6 @@
           "web-streams-polyfill": "web-streams-polyfill@3.3.3"
         }
       },
-      "fflate@0.8.2": {
-        "integrity": "sha512-cPJU47OaAoCbg0pBvzsgpTPhmhqI5eJjh/JIu8tPj5q+T7iLvW/JAYUqmE7KOB4R1ZyEhzBaIQpQpardBF5z8A==",
-        "dependencies": {}
-      },
       "formdata-polyfill@4.0.10": {
         "integrity": "sha512-buewHzMvYL29jdeQTVILecSaZKnt/RJWjoZCF5OW60Z67/GmSLBkOFM7qh1PI3zFNtJbaZL5eQu1vLfazOwj4g==",
         "dependencies": {
@@ -842,10 +842,6 @@
         "dependencies": {
           "@jridgewell/sourcemap-codec": "@jridgewell/sourcemap-codec@1.4.15"
         }
-      },
-      "meshoptimizer@0.18.1": {
-        "integrity": "sha512-ZhoIoL7TNV4s5B6+rx5mC//fw8/POGyNxS/DZyCJeiZ12ScLfVwRE/GfsxwiTkMYYD5DmK2/JXnEVXqL4rF+Sw==",
-        "dependencies": {}
       },
       "mock-socket@9.3.1": {
         "integrity": "sha512-qxBgB7Qa2sEQgHFjj0dSigq7fX4k6Saisd5Nelwp2q8mlbAFh5dHV9JTTlF8viYJLSSWgMCZFUom8PJcMNBoJw==",
@@ -987,5 +983,16 @@
       }
     }
   },
-  "remote": {}
+  "remote": {},
+  "workspace": {
+    "dependencies": [
+      "npm:@polkadot/api-contract@latest",
+      "npm:@polkadot/api@latest",
+      "npm:@polkadot/types",
+      "npm:@polkadot/util@latest",
+      "npm:@tresjs/leches@latest",
+      "npm:three@latest",
+      "npm:vue@latest"
+    ]
+  }
 }

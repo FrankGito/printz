@@ -1,4 +1,13 @@
 {
+  "imports": {
+    "vue": "npm:vue@latest",
+    "three": "npm:three@latest",
+    "@tresjs/leches": "npm:@tresjs/leches@latest",
+    "@polkadot/api": "npm:@polkadot/api@latest",
+    "@polkadot/api-contract": "npm:@polkadot/api-contract@latest",
+    "@polkadot/util": "npm:@polkadot/util@latest",
+    "@polkadot/types/runtime":"npm:@polkadot/types/types/interfaces/runtime"
+  },
   "tasks": {
     "dev": "deno run -A --node-modules-dir npm:vite",
     "build": "deno run -A --node-modules-dir npm:vite build",
