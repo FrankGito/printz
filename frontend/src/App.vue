@@ -4,6 +4,7 @@ import { useControls, TresLeches } from "@tresjs/leches";
 import { onMounted, ref } from "vue";
 import { watchEffect } from "vue";
 import usePsp34 from "./composables/usePsp34.ts";
+import { getOwnerOf } from "./composables/usePsp34.ts";
 
 const {
   reactiveVariable,
@@ -18,8 +19,8 @@ const { debugMessage, debugBtn } = useControls({
     label: "Debug Button",
     type: "button",
     size: "lg",
-    onClick: (value) => {
-      console.log(value);
+    onClick: () => {
+      console.log("its clicked");
     },
   },
 });

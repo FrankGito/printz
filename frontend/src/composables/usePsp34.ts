@@ -1,6 +1,10 @@
 // Import reactive and ref from Vue
 import { ref, reactive } from "vue";
-
+import { ApiPromise, Keyring, WsProvider } from "@polkadot/api";
+import { ContractPromise } from "@polkadot/api-contract";
+import type { WeightV2 } from "@polkadot/types/interfaces";
+import { BN } from "@polkadot/util";
+const CONTRACT = "";
 export default function usePsp34() {
   // Define a reactive variable
   const reactiveVariable = reactive({ value: "Initial value" });
@@ -25,4 +29,33 @@ export default function usePsp34() {
     simpleRef,
     incrementSimpleRef,
   };
+}
+
+export async function getOwnerOf(mintNumber: BN) {
+  const wsProvider = new WsProvider("ws://127.0.0.1:9944");
+  const api = await ApiPromise.create({ provider: wsProvider });
+  const keyring = new Keyring({ type: "sr25519" });
+  const alicePair = keyring.addFromUri("//Alice");
+  const res = await fetch("./item.json");
+  const abi = await res.json();
+
+  const metalContract = new ContractPromise(api, abi, CONTRACT);
+  const gasLimit: WeightV2 = api.registry.createType("WeightV2", {
+    refTime: new BN("2000000000"),
+    proofSize: new BN("200000"),
+  });
+  const storageDepositLimit = null;
+
+  const { output } = await metalContract.query.ownerOf(
+    alicePair.address,
+    {
+      gasLimit,
+      storageDepositLimit,
+    },
+    new BN(mintNumber),
+  );
+
+  console.log(
+    `Metal (${mintNumber.toString()}) is owned by ${output.toJSON()["ok"]}`,
+  );
 }
