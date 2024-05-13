@@ -38,12 +38,12 @@ pub mod item {
         approved: bool,
     }
 
-    // #[ink(event)]
-    // pub struct AttributeSet {
-    //     id: Id,
-    //     key: Vec<u8>,
-    //     data: Vec<u8>,
-    // }
+    #[ink(event)]
+    pub struct AttributeSet {
+        id: Id,
+        key: Vec<u8>,
+        data: Vec<u8>,
+    }
 
     impl Item {
         #[ink(constructor)]
@@ -74,20 +74,21 @@ pub mod item {
             }
         }
 
-        // #[ink(message)]
-        // pub fn set_attribute(
-        //     &mut self,
-        //     id: Id,
-        //     key: Vec<u8>,
-        //     value: Vec<u8>,
-        // ) -> Result<Vec<AttributeSet>, PSP34Error> {
-        //     self.attributes.insert((&id, &key), &value);
-        //     Ok(vec![AttributeSet {
-        //         id,
-        //         key,
-        //         data: value,
-        //     }])
-        // }
+        #[ink(message)]
+        pub fn set_attribute(
+            &mut self,
+            id: Id,
+            key: Vec<u8>,
+            value: Vec<u8>,
+        ) -> Result<(), PSP34Error> {
+            self.attributes.insert((&id, &key), &value);
+            Self::env().emit_event(AttributeSet {
+                id,
+                key,
+                data: value,
+            });
+            Ok(())
+        }
     }
 
     impl Psp34 for Item {
@@ -223,7 +224,7 @@ pub mod item {
 
     #[cfg(test)]
     mod test {
-        // use franks_test_suite::unit_test;
-        // unit_test!(Item, Item::new);
+        use franks_test_suite::unit_test;
+        unit_test!(Item, Item::new);
     }
 }
