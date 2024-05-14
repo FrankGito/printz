@@ -4,21 +4,18 @@ use ink::prelude::vec::Vec;
 use ink::primitives::AccountId;
 
 #[ink::trait_definition]
-pub trait Psp34 {
+pub trait PSP34 {
     #[ink(message)]
     fn collection_id(&self) -> Id;
-
-    #[ink(message)]
-    fn total_supply(&self) -> u128;
 
     #[ink(message)]
     fn balance_of(&self, owner: AccountId) -> u32;
 
     #[ink(message)]
-    fn allowance(&self, owner: AccountId, operator: AccountId, id: Option<Id>) -> bool;
+    fn owner_of(&self, id: Id) -> Option<AccountId>;
 
     #[ink(message)]
-    fn transfer(&mut self, to: AccountId, id: Id, data: Vec<u8>) -> Result<(), PSP34Error>;
+    fn allowance(&self, owner: AccountId, operator: AccountId, id: Option<Id>) -> bool;
 
     #[ink(message)]
     fn approve(
@@ -29,5 +26,8 @@ pub trait Psp34 {
     ) -> Result<(), PSP34Error>;
 
     #[ink(message)]
-    fn owner_of(&self, id: Id) -> Option<AccountId>;
+    fn transfer(&mut self, to: AccountId, id: Id, data: Vec<u8>) -> Result<(), PSP34Error>;
+
+    #[ink(message)]
+    fn total_supply(&self) -> u128;
 }

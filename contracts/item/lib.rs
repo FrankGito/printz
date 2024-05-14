@@ -6,10 +6,10 @@ pub mod item {
     use ink::prelude::vec::Vec;
     use ink::storage::Mapping;
     use interfaces::id::Id;
-    use interfaces::psp34::Psp34;
+    use interfaces::psp34::PSP34;
     use interfaces::psp34_error::PSP34Error;
-    use interfaces::psp34_metadata::Psp34Metadata;
-    use interfaces::psp34_mintable::Psp34Mintable;
+    use interfaces::psp34_metadata::PSP34Metadata;
+    use interfaces::psp34_mintable::PSP34Mintable;
 
     type Uri = String;
     #[ink(storage)]
@@ -91,7 +91,7 @@ pub mod item {
         }
     }
 
-    impl Psp34 for Item {
+    impl PSP34 for Item {
         #[ink(message)]
         fn collection_id(&self) -> Id {
             self.collection_id.clone()
@@ -190,7 +190,7 @@ pub mod item {
             self.token_owner.get(id)
         }
     }
-    impl Psp34Mintable for Item {
+    impl PSP34Mintable for Item {
         #[ink(message)]
         fn mint(&mut self, id: Id) -> Result<(), PSP34Error> {
             // Check if Id is already taken
@@ -215,7 +215,7 @@ pub mod item {
             Ok(())
         }
     }
-    impl Psp34Metadata for Item {
+    impl PSP34Metadata for Item {
         #[ink(message)]
         fn get_attribute(&self, id: Id, key: Vec<u8>) -> Option<Vec<u8>> {
             self.attributes.get((&id, &key))
