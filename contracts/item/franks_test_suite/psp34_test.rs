@@ -8,7 +8,7 @@ macro_rules! unit_test {
 
             #[ink::test]
             fn alice_has_zero() {
-                let mut item = $constructor();
+                let mut item = $constructor(0u128);
                 let accounts = ink::env::test::default_accounts::<ink::env::DefaultEnvironment>();
                 let alice = accounts.alice;
                 let count = item.owned_tokens_count.get(alice);
@@ -17,7 +17,7 @@ macro_rules! unit_test {
 
             #[ink::test]
             fn balance_of_alice_is_zero() {
-                let mut item = $constructor();
+                let mut item = $constructor(0u128);
                 let accounts = ink::env::test::default_accounts::<ink::env::DefaultEnvironment>();
                 let alice = accounts.alice;
                 let count = item.balance_of(alice);
@@ -26,7 +26,7 @@ macro_rules! unit_test {
 
             #[ink::test]
             fn total_supply_is_zero() {
-                let mut item = $constructor();
+                let mut item = $constructor(0u128);
                 let total_supply = item.total_supply();
                 assert_eq!(total_supply, 0)
             }
@@ -35,7 +35,7 @@ macro_rules! unit_test {
             fn mint_works() {
                 let accounts = default_accounts::<E>();
                 // Create a new contract instance.
-                let mut token = $constructor();
+                let mut token = $constructor(0u128);
                 // Token 1 does not exists.
                 assert_eq!(token.owner_of(Id::U128(0)), None);
                 // Alice does not owns tokens.
@@ -50,7 +50,7 @@ macro_rules! unit_test {
             fn mint_existing_should_fail() {
                 let accounts = default_accounts::<E>();
                 // Create a new contract instance.
-                let mut token = $constructor();
+                let mut token = $constructor(0u128);
                 // Create token Id 1.
                 assert_eq!(token.mint(Id::U128(0)), Ok(()));
                 // Alice owns 1 token.
@@ -64,7 +64,7 @@ macro_rules! unit_test {
             #[ink::test]
             fn transfer_works() {
                 let accounts = default_accounts::<E>();
-                let mut token = $constructor();
+                let mut token = $constructor(0u128);
                 set_caller::<E>(accounts.alice);
                 assert_eq!(token.mint(Id::U128(1)), Ok(()));
                 // Alice owns token 1
@@ -83,7 +83,7 @@ macro_rules! unit_test {
             #[ink::test]
             fn allowance_works() {
                 let accounts = default_accounts::<E>();
-                let mut token = $constructor();
+                let mut token = $constructor(0u128);
                 //Alice mints Token 1
                 set_caller::<E>(accounts.alice);
                 assert_eq!(token.mint(Id::U128(1)), Ok(()));

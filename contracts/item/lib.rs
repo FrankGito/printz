@@ -11,15 +11,12 @@ pub mod item {
     use interfaces::psp34_metadata::PSP34Metadata;
     use interfaces::psp34_mintable::PSP34Mintable;
 
-    type Uri = String;
     #[ink(storage)]
     #[derive(Default)]
     pub struct Item {
-        collection_id: Id,
         owned_tokens_count: Mapping<AccountId, u32>,
-        total_supply: u128,
         token_owner: Mapping<Id, AccountId>,
-        uris: Mapping<Id, Uri>,
+        total_supply: u128,
         approvals: Mapping<(AccountId, AccountId, Option<Id>), ()>,
         attributes: Mapping<(Id, Vec<u8>), Vec<u8>>,
     }
@@ -47,7 +44,7 @@ pub mod item {
 
     impl Item {
         #[ink(constructor)]
-        pub fn new() -> Self {
+        pub fn new(total_supply: u128) -> Self {
             let caller = Self::env().caller();
             Self::env().emit_event(Transfer {
                 from: None,
@@ -55,35 +52,28 @@ pub mod item {
                 id: Id::U128(0u128),
             });
             Self {
-                collection_id: Id::U128(0u128),
                 owned_tokens_count: Mapping::new(),
-                total_supply: 0,
+                total_supply,
                 token_owner: Mapping::new(),
-                uris: Mapping::new(),
                 approvals: Mapping::new(),
                 attributes: Mapping::new(),
             }
         }
 
         #[ink(message)]
-        pub fn get_uri(&self, id: Id) -> Result<Uri, PSP34Error> {
-            if self.uris.get(id.clone()).is_some() {
-                Ok(self.uris.get(id).unwrap())
-            } else {
-                Err(PSP34Error::TokenNotExists)
-            }
-        }
-
-        #[ink(message)]
         pub fn set_attribute(
             &mut self,
-            id: Id,
-            key: Vec<u8>,
-            value: Vec<u8>,
+            /*id: Id,*/
+            /*key: Vec<u8>,*/
+            /*value: Vec<u8>,*/
         ) -> Result<(), PSP34Error> {
-            self.attributes.insert((&id, &key), &value);
+            let token_id = Id::U128(0);
+            let key: Vec<u8> = String::from("uri").into();
+            let value: Vec<u8> =
+                String::from("ipfs://QmQqzMTavQgT4f4T5v6PWBp7XNKtoPmC9jvn12WPT3gkSE").into();
+            self.attributes.insert((&token_id, &key), &value);
             Self::env().emit_event(AttributeSet {
-                id,
+                id: token_id,
                 key,
                 data: value,
             });
@@ -94,7 +84,8 @@ pub mod item {
     impl PSP34 for Item {
         #[ink(message)]
         fn collection_id(&self) -> Id {
-            self.collection_id.clone()
+            let account_id = self.env().caller();
+            Id::Bytes(<_ as AsRef<[u8; 32]>>::as_ref(&account_id).to_vec())
         }
 
         #[ink(message)]
@@ -190,6 +181,7 @@ pub mod item {
             self.token_owner.get(id)
         }
     }
+
     impl PSP34Mintable for Item {
         #[ink(message)]
         fn mint(&mut self, id: Id) -> Result<(), PSP34Error> {
@@ -215,6 +207,7 @@ pub mod item {
             Ok(())
         }
     }
+
     impl PSP34Metadata for Item {
         #[ink(message)]
         fn get_attribute(&self, id: Id, key: Vec<u8>) -> Option<Vec<u8>> {
