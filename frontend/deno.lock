@@ -5,7 +5,6 @@
       "npm:@polkadot/api-contract@latest": "npm:@polkadot/api-contract@11.0.3_@polkadot+util@12.6.2",
       "npm:@polkadot/api@latest": "npm:@polkadot/api@11.0.3_@polkadot+util@12.6.2_@polkadot+util-crypto@12.6.2__@polkadot+util@12.6.2__@polkadot+x-randomvalues@12.6.2___@polkadot+util@12.6.2___@polkadot+wasm-util@7.3.2____@polkadot+util@12.6.2__@polkadot+wasm-util@7.3.2___@polkadot+util@12.6.2",
       "npm:@polkadot/types": "npm:@polkadot/types@11.0.3_@polkadot+util@12.6.2_@polkadot+util-crypto@12.6.2__@polkadot+util@12.6.2__@polkadot+x-randomvalues@12.6.2___@polkadot+util@12.6.2___@polkadot+wasm-util@7.3.2____@polkadot+util@12.6.2__@polkadot+wasm-util@7.3.2___@polkadot+util@12.6.2",
-      "npm:@polkadot/types@latest": "npm:@polkadot/types@11.0.3_@polkadot+util@12.6.2_@polkadot+util-crypto@12.6.2__@polkadot+util@12.6.2__@polkadot+x-randomvalues@12.6.2___@polkadot+util@12.6.2___@polkadot+wasm-util@7.3.2____@polkadot+util@12.6.2__@polkadot+wasm-util@7.3.2___@polkadot+util@12.6.2",
       "npm:@polkadot/util@latest": "npm:@polkadot/util@12.6.2",
       "npm:@tresjs/leches@latest": "npm:@tresjs/leches@0.14.0_vue@3.4.27_vite@5.2.11",
       "npm:@vitejs/plugin-vue@latest": "npm:@vitejs/plugin-vue@5.0.4_vite@5.2.11_vue@3.4.27",

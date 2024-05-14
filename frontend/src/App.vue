@@ -6,6 +6,8 @@ import { watchEffect } from "vue";
 import usePsp34 from "./composables/usePsp34.ts";
 import { getOwnerOf } from "./composables/usePsp34.ts";
 import { BN } from "@polkadot/util";
+import { useCommitText } from "./composables/useIpfs.ts";
+import TextCommiter from "./components/TextCommiter.vue";
 
 const {
   reactiveVariable,
@@ -35,7 +37,7 @@ watchEffect(() => {
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 
 onMounted(() => {
-  getOwnerOf(new BN(0))
+  getOwnerOf(new BN(0));
   console.log("--------------------");
   console.log("Use reactiveVariable");
   console.log(reactiveVariable.value);
@@ -86,6 +88,7 @@ onMounted(() => {
       <div class="mint-text">Mint</div>
     </button>
   </div>
+  <TextCommiter />
 </template>
 
 <style scoped>
