@@ -1,0 +1,7 @@
+cargo-features = ["edition2021"]
+
+[workspace]
+# Optional: Include if part of a workspace
+members = [
+  "contracts/item"
+]

@@ -63,9 +63,9 @@ pub mod item {
         #[ink(message)]
         pub fn set_attribute(
             &mut self,
-            /*id: Id,*/
-            /*key: Vec<u8>,*/
-            /*value: Vec<u8>,*/
+            id: Id,
+            key: Vec<u8>,
+            value: Vec<u8>,
         ) -> Result<(), PSP34Error> {
             let token_id = Id::U128(0);
             let key: Vec<u8> = String::from("uri").into();

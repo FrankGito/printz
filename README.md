@@ -44,4 +44,4 @@ Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint 
 | Name  | Telegram  | Discord    |
 | :---- | :-------- | :--------- |
 | Frank | frankbevr | frankbevr  |
-| Mark  |           | proxy_0441 |
+| Mark  | proxy720  | proxy_0441 |
