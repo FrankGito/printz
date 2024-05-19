@@ -6,12 +6,8 @@ edition = "2021"
 
 [dependencies]
 ink = { version = "5.0.0", default-features = false }
-interfaces = { path = "./interfaces", default-features = false, features = [
-  "ink-as-dependency",
-] }
-franks_test_suite = { path = "./franks_test_suite/", default-features = false, features = [
-  "ink-as-dependency",
-] }
+interfaces = { path = "./interfaces", default-features = false, features = ["ink-as-dependency"] }
+franks_test_suite = { path = "./franks_test_suite/", default-features = false, features = ["ink-as-dependency"] }
 
 # scale = { package = "parity-scale-codec", version = "3", default-features = false, features = [
 #   "derive",

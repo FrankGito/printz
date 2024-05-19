@@ -1,5 +1,9 @@
 #![cfg_attr(not(feature = "std"), no_std, no_main)]
 
+#![allow(unexpected_cfgs)]
+#![allow(non_local_definitions)]
+#![allow(clippy::type_complexity)]
+
 #[ink::contract]
 pub mod item {
     use ink::prelude::string::String;
@@ -12,12 +16,11 @@ pub mod item {
     use interfaces::psp34_mintable::PSP34Mintable;
 
     #[ink(storage)]
-    #[derive(Default)]
     pub struct Item {
         owned_tokens_count: Mapping<AccountId, u32>,
         token_owner: Mapping<Id, AccountId>,
         total_supply: u128,
-        approvals: Mapping<(AccountId, AccountId, Option<Id>), ()>,
+        approvals: Mapping<(AccountId, AccountId), Option<Id>>,
         attributes: Mapping<(Id, Vec<u8>), Vec<u8>>,
     }
 
@@ -45,12 +48,9 @@ pub mod item {
     impl Item {
         #[ink(constructor)]
         pub fn new(total_supply: u128) -> Self {
-            let caller = Self::env().caller();
-            Self::env().emit_event(Transfer {
-                from: None,
-                to: Some(caller),
-                id: Id::U128(0u128),
-            });
+            // Mark: I don't think this is needed, check spec!
+            // let caller: AccountId = Self::env().caller();
+            // Self::env().emit_event(Transfer { from: None, to: Some(caller), id: Id::U128(0u128) });
             Self {
                 owned_tokens_count: Mapping::new(),
                 total_supply,
@@ -61,30 +61,22 @@ pub mod item {
         }
 
         #[ink(message)]
-        pub fn set_attribute(
-            &mut self,
-            id: Id,
-            key: Vec<u8>,
-            value: Vec<u8>,
-        ) -> Result<(), PSP34Error> {
-            let token_id = Id::U128(0);
-            let key: Vec<u8> = String::from("uri").into();
-            let value: Vec<u8> =
-                String::from("ipfs://QmQqzMTavQgT4f4T5v6PWBp7XNKtoPmC9jvn12WPT3gkSE").into();
-            self.attributes.insert((&token_id, &key), &value);
-            Self::env().emit_event(AttributeSet {
-                id: token_id,
-                key,
-                data: value,
-            });
-            Ok(())
+        pub fn set_attribute(&mut self, id: Id, key: Vec<u8>, value: Vec<u8>) -> Result<(), PSP34Error> {
+            if !self.token_owner.contains(&id) {
+                self.attributes.insert((&id, &key), &value);
+                Self::env().emit_event(AttributeSet { id, key, data: value });
+                Ok(())
+            }
+            else {
+                Err(PSP34Error::Custom(String::from("Token already minted")))
+            }
         }
     }
 
     impl PSP34 for Item {
         #[ink(message)]
         fn collection_id(&self) -> Id {
-            let account_id = self.env().caller();
+            let account_id: AccountId = self.env().caller();
             Id::Bytes(<_ as AsRef<[u8; 32]>>::as_ref(&account_id).to_vec())
         }
 
@@ -100,8 +92,9 @@ pub mod item {
 
         #[ink(message)]
         fn allowance(&self, owner: AccountId, operator: AccountId, id: Option<Id>) -> bool {
-            self.approvals.get((owner, operator, &None)).is_some()
-                || id.is_some() && self.approvals.get((owner, operator, id)).is_some()
+            self.approvals.get((owner, operator)).map(
+                |allowance: Option<Id>| allowance.is_none() || allowance == id
+            ).unwrap_or(false)
         }
 
         #[ink(message)]
@@ -139,10 +132,10 @@ pub mod item {
             id: Option<Id>,
             approved: bool,
         ) -> Result<(), PSP34Error> {
-            let mut caller = self.env().caller();
-            if let Some(id) = &id {
+            let mut caller: AccountId = self.env().caller();
+            if let Some(id) = id.clone() {
                 let owner = self
-                    .owner_of(id.clone())
+                    .owner_of(id)
                     .ok_or(PSP34Error::TokenNotExists)?;
                 if approved && owner == operator {
                     return Err(PSP34Error::SelfApprove);
@@ -154,23 +147,22 @@ pub mod item {
 
                 if !approved && self.allowance(owner, operator, None) {
                     return Err(PSP34Error::Custom(String::from(
-                    "Cannot revoke approval for a single token, when the operator has approval for all tokens."
-                )));
+                      "Cannot revoke approval for a single token, when the operator has approval for all tokens." )));
                 }
                 caller = owner;
             }
 
             if approved {
-                self.approvals.insert((caller, operator, id.as_ref()), &());
+                self.approvals.insert((caller, operator), &id);
             } else {
-                self.approvals.remove((caller, operator, id.as_ref()));
+                self.approvals.remove((caller, operator));
             }
 
             Self::env().emit_event(Approval {
-                owner: AccountId::from([0xff; 32]),
-                operator: AccountId::from([0xff; 32]),
-                id: Some(Id::U128(0u128)),
-                approved: true,
+                owner: caller,
+                operator,
+                id,
+                approved,
             });
 
             Ok(())
