@@ -180,13 +180,11 @@ pub mod item {
             // Get current caller
             let caller = self.env().caller();
             // Increase owned tokens_count
-            let current_count = self.owned_tokens_count.get(caller).unwrap_or(0);
-            let new_countr = current_count.saturating_add(1);
-            self.owned_tokens_count.insert(caller, &new_countr);
+            let new_count = self.owned_tokens_count.get(caller).and_then(|x| x.checked_add(1)).filter(|x| x > &0u32).unwrap_or(1u32);
+            self.owned_tokens_count.insert(caller, &new_count);
 
             // Increase total_supply
-            let current_supply = self.total_supply;
-            let new_supply = current_supply.saturating_add(1);
+            let new_supply = self.total_supply.checked_add(1).unwrap_or(1);
             self.total_supply = new_supply;
 
             // add Owner
