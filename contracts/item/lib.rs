@@ -48,9 +48,6 @@ pub mod item {
     impl Item {
         #[ink(constructor)]
         pub fn new(total_supply: u128) -> Self {
-            // Mark: I don't think this is needed, check spec!
-            // let caller: AccountId = Self::env().caller();
-            // Self::env().emit_event(Transfer { from: None, to: Some(caller), id: Id::U128(0u128) });
             Self {
                 owned_tokens_count: Mapping::new(),
                 total_supply,
@@ -99,30 +96,28 @@ pub mod item {
 
         #[ink(message)]
         fn transfer(&mut self, to: AccountId, id: Id, _data: Vec<u8>) -> Result<(), PSP34Error> {
-            // Get caller
             let caller = self.env().caller();
-            // Check if caller has NFT
-            if self.token_owner.get(id.clone()).is_none() {
-                return Err(PSP34Error::Custom(String::from("Caller doesn't have it")));
-            }
-            // Decrease owned_tokens_count
-            let current_count_caller = self.owned_tokens_count.get(caller).unwrap_or(0);
-            ink::env::debug_println!("Thats the current_count_caller {}", current_count_caller);
-            self.owned_tokens_count
-                .insert(caller, &current_count_caller.saturating_sub(0));
-            // set new token_owner
-            self.token_owner.insert(id.clone(), &to);
-            let current_count_to = self.owned_tokens_count.get(to).unwrap_or(0);
-            ink::env::debug_println!("Thats the current_count_to {}", current_count_to);
-            self.owned_tokens_count
-                .insert(to, &current_count_to.saturating_add(1));
+            self.token_owner.get(&id).map(|owner| {
+                if owner != caller && !self.allowance(owner, caller, Some(id.clone())) {
+                    return Err(PSP34Error::NotApproved)
+                }
+                let new_count_owner = self.owned_tokens_count.get(owner).and_then(|x| x.checked_sub(1)).filter(|x| x > &0u32).unwrap_or(0u32);
+                self.owned_tokens_count.insert(owner, &new_count_owner);
+                self.token_owner.insert(id.clone(), &to);
+                let new_count_to = self.owned_tokens_count.get(to).and_then(|x| x.checked_add(1)).filter(|x| x > &0u32).unwrap_or(1u32);
+                self.owned_tokens_count.insert(to, &new_count_to);
 
-            Self::env().emit_event(Transfer {
-                from: Some(caller),
-                to: Some(to),
-                id,
-            });
-            Ok(())
+                if self.approvals.get((owner, caller)) == Some(Some(id.clone())) {
+                    self.approvals.remove((owner, caller));
+                }
+
+                Self::env().emit_event(Transfer {
+                    from: Some(caller),
+                    to: Some(to),
+                    id,
+                });
+                Ok(())
+            }).unwrap_or(Err(PSP34Error::TokenNotExists))
         }
 
         #[ink(message)]
