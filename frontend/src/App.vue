@@ -1,36 +1,23 @@
 <script setup lang="ts">
-import * as THREE from "three";
+import * as THREE from "three/build/three.module.js";
+
 import { useControls, TresLeches } from "@tresjs/leches";
 import { onMounted, ref } from "vue";
 import { watchEffect } from "vue";
-import usePsp34 from "./composables/usePsp34.ts";
 import { getOwnerOf } from "./composables/usePsp34.ts";
 import { BN } from "@polkadot/util";
-import { useCommitText } from "./composables/useIpfs.ts";
-import TextCommiter from "./components/TextCommiter.vue";
 
-const {
-  reactiveVariable,
-  updateReactiveVariable,
-  simpleRef,
-  incrementSimpleRef,
-} = usePsp34();
-
-const { debugMessage, debugBtn } = useControls({
+const { debugMessage } = useControls({
   debugMessage: "I`m a Debug UI",
   debugBtn: {
     label: "Debug Button",
     type: "button",
     size: "lg",
-    onClick: () => {
-      console.log("its clicked");
-    },
+    onClick: () => {},
   },
 });
 
 watchEffect(() => {
-  console.log("---------FRANK---------");
-  console.log("I changed debug Message");
   console.log(debugMessage.value.value);
 });
 
@@ -38,16 +25,6 @@ const canvasRef = ref<HTMLCanvasElement | null>(null);
 
 onMounted(() => {
   getOwnerOf(new BN(0));
-  console.log("--------------------");
-  console.log("Use reactiveVariable");
-  console.log(reactiveVariable.value);
-  updateReactiveVariable("Buff Buff Buff");
-  console.log(reactiveVariable.value);
-  console.log("--------------------");
-  console.log("Use simpleRef");
-  console.log(simpleRef.value);
-  incrementSimpleRef();
-  console.log(simpleRef.value);
 
   const canvas = canvasRef.value;
 
@@ -88,7 +65,6 @@ onMounted(() => {
       <div class="mint-text">Mint</div>
     </button>
   </div>
-  <TextCommiter />
 </template>
 
 <style scoped>
@@ -128,8 +104,8 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 350px;
-  height: 425px;
+  width: 400px;
+  height: 400px;
   padding: 25px;
   background: white;
   border-radius: 5px;

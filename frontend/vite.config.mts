@@ -7,7 +7,7 @@ import "npm:@tresjs/leches@latest";
 import "npm:@polkadot/api@latest";
 import "npm:@polkadot/api-contract@latest";
 import "npm:@polkadot/util@latest";
-import "npm:@polkadot/types/";
+import "npm:@polkadot/types/interfaces";
 
 // https://vitejs.dev/config/
 export default defineConfig({
