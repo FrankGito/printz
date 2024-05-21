@@ -1,5 +1,4 @@
 #![cfg_attr(not(feature = "std"), no_std, no_main)]
-
 #![allow(unexpected_cfgs)]
 #![allow(non_local_definitions)]
 #![allow(clippy::type_complexity)]
@@ -58,13 +57,21 @@ pub mod item {
         }
 
         #[ink(message)]
-        pub fn set_attribute(&mut self, id: Id, key: Vec<u8>, value: Vec<u8>) -> Result<(), PSP34Error> {
+        pub fn set_attribute(
+            &mut self,
+            id: Id,
+            key: Vec<u8>,
+            value: Vec<u8>,
+        ) -> Result<(), PSP34Error> {
             if !self.token_owner.contains(&id) {
                 self.attributes.insert((&id, &key), &value);
-                Self::env().emit_event(AttributeSet { id, key, data: value });
+                Self::env().emit_event(AttributeSet {
+                    id,
+                    key,
+                    data: value,
+                });
                 Ok(())
-            }
-            else {
+            } else {
                 Err(PSP34Error::Custom(String::from("Token already minted")))
             }
         }
@@ -89,35 +96,49 @@ pub mod item {
 
         #[ink(message)]
         fn allowance(&self, owner: AccountId, operator: AccountId, id: Option<Id>) -> bool {
-            self.approvals.get((owner, operator)).map(
-                |allowance: Option<Id>| allowance.is_none() || allowance == id
-            ).unwrap_or(false)
+            self.approvals
+                .get((owner, operator))
+                .map(|allowance: Option<Id>| allowance.is_none() || allowance == id)
+                .unwrap_or(false)
         }
 
         #[ink(message)]
         fn transfer(&mut self, to: AccountId, id: Id, _data: Vec<u8>) -> Result<(), PSP34Error> {
             let caller = self.env().caller();
-            self.token_owner.get(&id).map(|owner| {
-                if owner != caller && !self.allowance(owner, caller, Some(id.clone())) {
-                    return Err(PSP34Error::NotApproved)
-                }
-                let new_count_owner = self.owned_tokens_count.get(owner).and_then(|x| x.checked_sub(1)).filter(|x| x > &0u32).unwrap_or(0u32);
-                self.owned_tokens_count.insert(owner, &new_count_owner);
-                self.token_owner.insert(id.clone(), &to);
-                let new_count_to = self.owned_tokens_count.get(to).and_then(|x| x.checked_add(1)).filter(|x| x > &0u32).unwrap_or(1u32);
-                self.owned_tokens_count.insert(to, &new_count_to);
+            self.token_owner
+                .get(&id)
+                .map(|owner| {
+                    if owner != caller && !self.allowance(owner, caller, Some(id.clone())) {
+                        return Err(PSP34Error::NotApproved);
+                    }
+                    let new_count_owner = self
+                        .owned_tokens_count
+                        .get(owner)
+                        .and_then(|x| x.checked_sub(1))
+                        .filter(|x| x > &0u32)
+                        .unwrap_or(0u32);
+                    self.owned_tokens_count.insert(owner, &new_count_owner);
+                    self.token_owner.insert(id.clone(), &to);
+                    let new_count_to = self
+                        .owned_tokens_count
+                        .get(to)
+                        .and_then(|x| x.checked_add(1))
+                        .filter(|x| x > &0u32)
+                        .unwrap_or(1u32);
+                    self.owned_tokens_count.insert(to, &new_count_to);
 
-                if self.approvals.get((owner, caller)) == Some(Some(id.clone())) {
-                    self.approvals.remove((owner, caller));
-                }
+                    if self.approvals.get((owner, caller)) == Some(Some(id.clone())) {
+                        self.approvals.remove((owner, caller));
+                    }
 
-                Self::env().emit_event(Transfer {
-                    from: Some(caller),
-                    to: Some(to),
-                    id,
-                });
-                Ok(())
-            }).unwrap_or(Err(PSP34Error::TokenNotExists))
+                    Self::env().emit_event(Transfer {
+                        from: Some(caller),
+                        to: Some(to),
+                        id,
+                    });
+                    Ok(())
+                })
+                .unwrap_or(Err(PSP34Error::TokenNotExists))
         }
 
         #[ink(message)]
@@ -129,9 +150,7 @@ pub mod item {
         ) -> Result<(), PSP34Error> {
             let mut caller: AccountId = self.env().caller();
             if let Some(id) = id.clone() {
-                let owner = self
-                    .owner_of(id)
-                    .ok_or(PSP34Error::TokenNotExists)?;
+                let owner = self.owner_of(id).ok_or(PSP34Error::TokenNotExists)?;
                 if approved && owner == operator {
                     return Err(PSP34Error::SelfApprove);
                 }
@@ -180,7 +199,12 @@ pub mod item {
             // Get current caller
             let caller = self.env().caller();
             // Increase owned tokens_count
-            let new_count = self.owned_tokens_count.get(caller).and_then(|x| x.checked_add(1)).filter(|x| x > &0u32).unwrap_or(1u32);
+            let new_count = self
+                .owned_tokens_count
+                .get(caller)
+                .and_then(|x| x.checked_add(1))
+                .filter(|x| x > &0u32)
+                .unwrap_or(1u32);
             self.owned_tokens_count.insert(caller, &new_count);
 
             // Increase total_supply
