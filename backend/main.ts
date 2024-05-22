@@ -1,6 +1,7 @@
 import { Application } from "jsr:@oak/oak/application";
 import { Router } from "jsr:@oak/oak/router";
-import { oakCors } from "https://deno.land/x/cors/mod.ts";
+import { oakCors } from "https://deno.land/x/cors@v1.2.2/mod.ts";
+import { generateIpfsHash } from "./ipfs.ts";
 
 const app = new Application();
 const router = new Router();
@@ -17,6 +18,7 @@ router.post("/addGlb", async (ctx) => {
   );
   ctx.response.body = { message: "File uploaded successfully" };
 });
+
 router.get("/getGlb", async (ctx) => {
   const filePath = "./uploads/cube.glb";
   const fileContent = await Deno.readFile(filePath);
@@ -24,8 +26,14 @@ router.get("/getGlb", async (ctx) => {
   ctx.response.body = fileContent;
 });
 
+router.get("/getGlbHash", async (ctx) => {
+  const ipfsHash = await generateIpfsHash();
+  ctx.response.headers.set("Content-Type", "text/plain");
+  ctx.response.body = ipfsHash;
+});
+
 app.use(oakCors({ origin: "http://localhost:5173" }));
 app.use(router.routes());
 app.use(router.allowedMethods());
 
-await app.listen({ port: 8080 });
+await app.listen({ port: 8000 });
