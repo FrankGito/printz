@@ -3,51 +3,27 @@ import * as THREE from "three";
 import { useControls, TresLeches } from "@tresjs/leches";
 import { onMounted, ref } from "vue";
 import { watchEffect } from "vue";
-import usePsp34 from "./composables/usePsp34.ts";
 import { getOwnerOf } from "./composables/usePsp34.ts";
 import { BN } from "@polkadot/util";
-import { useCommitText } from "./composables/useIpfs.ts";
-import TextCommiter from "./components/TextCommiter.vue";
+import FileInput from "./components/FileInput.vue";
+import Navbar from "./components/Navbar.vue";
+import Card from "./components/Card.vue";
+import { TresCanvas } from "@tresjs/core";
 
-const {
-  reactiveVariable,
-  updateReactiveVariable,
-  simpleRef,
-  incrementSimpleRef,
-} = usePsp34();
-
-const { debugMessage, debugBtn } = useControls({
+const { debugMessage } = useControls({
   debugMessage: "I`m a Debug UI",
   debugBtn: {
     label: "Debug Button",
     type: "button",
     size: "lg",
-    onClick: () => {
-      console.log("its clicked");
-    },
+    onClick: () => {},
   },
-});
-
-watchEffect(() => {
-  console.log("---------FRANK---------");
-  console.log("I changed debug Message");
-  console.log(debugMessage.value.value);
 });
 
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 
 onMounted(() => {
   getOwnerOf(new BN(0));
-  console.log("--------------------");
-  console.log("Use reactiveVariable");
-  console.log(reactiveVariable.value);
-  updateReactiveVariable("Buff Buff Buff");
-  console.log(reactiveVariable.value);
-  console.log("--------------------");
-  console.log("Use simpleRef");
-  console.log(simpleRef.value);
-  incrementSimpleRef();
-  console.log(simpleRef.value);
 
   const canvas = canvasRef.value;
 
@@ -82,62 +58,38 @@ onMounted(() => {
 
 <template>
   <TresLeches />
-  <div class="card">
-    <canvas id="canvas" ref="canvasRef" width="300px" height="300px"></canvas>
-    <button class="mint-button">
-      <div class="mint-text">Mint</div>
-    </button>
+  <Navbar />
+  <div class="container text-center">
+    <div class="row row-cols-3">
+      <Card class="mt-3">
+        <div>
+          <canvas
+            id="canvas_three"
+            ref="canvasRef"
+            width="300px"
+            height="300px"
+          ></canvas>
+        </div>
+      </Card>
+      <Card class="mt-3">
+        <FileInput />
+      </Card>
+      <Card class="mt-3">
+        <TresCanvas clear-color="#82DBC5">
+          <TresPerspectiveCamera :position="[3, 3, 3]" :look-at="[0, 0, 0]" />
+          <TresMesh>
+            <TresTorusGeometry :args="[1, 0.5, 16, 32]" />
+            <TresMeshBasicMaterial color="orange" />
+          </TresMesh>
+          <TresAmbientLight :intensity="1" />
+        </TresCanvas>
+      </Card>
+    </div>
   </div>
-  <TextCommiter />
 </template>
-
-<style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Text+Me+One&display=swap");
-body {
-  font-family: "Text Me One", sans-serif;
-}
-.mint-button {
-  width: 150px;
-  height: 50px;
-  padding: 10px 15px;
-  background: #ffffff;
-  border-radius: 5px;
-  border: 1px black solid;
-  justify-content: center;
-  align-items: center;
-}
-
-.mint-button:hover {
-  background: #ffe5f3;
-}
-.mint-button:active {
-  background: #ffcce7;
-}
-
-.mint-text {
-  color: black;
-  font-size: 24px;
-  font-family: Text Me One;
-  font-weight: 400;
-  letter-spacing: 2.4px;
-  word-wrap: break-word;
-}
-
-.card {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 350px;
-  height: 425px;
-  padding: 25px;
-  background: white;
-  border-radius: 5px;
-  border: 1px black solid;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 25px;
-  display: inline-flex;
+<style>
+#canvas {
+  height: 50%;
+  width: 50%;
 }
 </style>

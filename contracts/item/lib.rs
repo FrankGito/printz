@@ -1,5 +1,4 @@
 #![cfg_attr(not(feature = "std"), no_std, no_main)]
-
 #![allow(unexpected_cfgs)]
 #![allow(non_local_definitions)]
 #![allow(clippy::type_complexity)]
@@ -61,13 +60,21 @@ pub mod item {
         }
 
         #[ink(message)]
-        pub fn set_attribute(&mut self, id: Id, key: Vec<u8>, value: Vec<u8>) -> Result<(), PSP34Error> {
+        pub fn set_attribute(
+            &mut self,
+            id: Id,
+            key: Vec<u8>,
+            value: Vec<u8>,
+        ) -> Result<(), PSP34Error> {
             if !self.token_owner.contains(&id) {
                 self.attributes.insert((&id, &key), &value);
-                Self::env().emit_event(AttributeSet { id, key, data: value });
+                Self::env().emit_event(AttributeSet {
+                    id,
+                    key,
+                    data: value,
+                });
                 Ok(())
-            }
-            else {
+            } else {
                 Err(PSP34Error::Custom(String::from("Token already minted")))
             }
         }
@@ -197,7 +204,12 @@ pub mod item {
             // Get current caller
             let caller = self.env().caller();
             // Increase owned tokens_count
-            let new_count = self.owned_tokens_count.get(caller).and_then(|x| x.checked_add(1)).filter(|x| x > &0u32).unwrap_or(1u32);
+            let new_count = self
+                .owned_tokens_count
+                .get(caller)
+                .and_then(|x| x.checked_add(1))
+                .filter(|x| x > &0u32)
+                .unwrap_or(1u32);
             self.owned_tokens_count.insert(caller, &new_count);
 
             // Increase total_supply
