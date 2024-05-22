@@ -5,7 +5,7 @@ import { onMounted, ref } from "vue";
 import { watchEffect } from "vue";
 import { getOwnerOf } from "./composables/usePsp34.ts";
 import { BN } from "@polkadot/util";
-import FileUploader from "./components/FileUploader.vue";
+import FileInput from "./components/FileInput.vue";
 import Navbar from "./components/Navbar.vue";
 import Card from "./components/Card.vue";
 
@@ -63,7 +63,9 @@ onMounted(() => {
   <TresLeches />
   <Navbar />
   <Card>
-    <canvas id="canvas" ref="canvasRef" width="300px" height="300px"></canvas>
+    <div>
+      <canvas id="canvas" ref="canvasRef" width="300px" height="300px"></canvas>
+      <FileInput />
+    </div>
   </Card>
-  <FileUploader />
 </template>

@@ -25,8 +25,28 @@ async function sendFileToServer() {
 </script>
 <template>
   <div>
-    <input type="file" @change="handleFileUpload" />
-    <button @click="logMe">Log me</button>
-    <button @click="sendFileToServer">Send file to server</button>
+    <label for="formFile" class="form-label mt-4">Upload your .glb File</label>
+    <input
+      class="form-control"
+      id="formFile"
+      type="file"
+      @change="handleFileUpload"
+    />
+    <div class="d-grid gap-2 mt-4">
+      <button
+        @click="logMe"
+        class="btn btn-lg btn-outline-primary"
+        type="button"
+      >
+        Log me
+      </button>
+      <button
+        @click="sendFileToServer"
+        class="btn btn-lg btn-outline-primary"
+        type="button"
+      >
+        Send file to server
+      </button>
+    </div>
   </div>
 </template>
