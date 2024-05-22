@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from "vue";
+import { getTotalSupply } from '../composables/usePsp34.ts'
 const file = ref(null);
 
 function handleFileUpload(event) {
@@ -85,6 +86,13 @@ async function getIpfsHashFromServer() {
         type="button"
       >
         Get Ipfs Hash from server
+      </button>
+      <button
+        @click="getTotalSupply"
+        class="btn btn-lg btn-outline-primary"
+        type="button"
+      >
+        Get total supply from contract 
       </button>
     </div>
   </div>

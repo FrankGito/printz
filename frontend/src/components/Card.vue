@@ -3,7 +3,7 @@
     <div class="card-header"></div>
     <div class="card-body">
       <h4 class="card-title">Cube</h4>
-      <div class="container" style="height: 300px">
+      <div class="container" style="height: 500px">
         <slot></slot>
       </div>
     </div>
