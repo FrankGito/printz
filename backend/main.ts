@@ -5,10 +5,10 @@ import { oakCors } from "https://deno.land/x/cors/mod.ts";
 const app = new Application();
 const router = new Router();
 
-router.post("/upload", async (ctx) => {
+router.post("/addGlb", async (ctx) => {
   const formData = await ctx.request.body.formData();
   const file = formData.get("file") as File;
-  const filePath = `./uploads/${file.name}`;
+  const filePath = `./uploads/cube.glb`;
   const content = await file.arrayBuffer();
   const array = new Uint8Array(content);
   await Deno.writeFile(
@@ -16,6 +16,12 @@ router.post("/upload", async (ctx) => {
     array,
   );
   ctx.response.body = { message: "File uploaded successfully" };
+});
+router.get("/getGlb", async (ctx) => {
+  const filePath = "./uploads/cube.glb";
+  const fileContent = await Deno.readFile(filePath);
+  ctx.response.headers.set("Content-Type", "model/gltf-binary");
+  ctx.response.body = fileContent;
 });
 
 app.use(oakCors({ origin: "http://localhost:5173" }));
