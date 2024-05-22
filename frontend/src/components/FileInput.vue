@@ -1,6 +1,7 @@
 <script setup>
-import { ref } from "vue";
-import { getTotalSupply } from '../composables/usePsp34.ts'
+import { ref, onMounted } from "vue";
+import { getTotalSupply, mint } from '../composables/usePsp34.ts'
+import { BN } from "@polkadot/util";
 const file = ref(null);
 
 function handleFileUpload(event) {
@@ -93,6 +94,13 @@ async function getIpfsHashFromServer() {
         type="button"
       >
         Get total supply from contract 
+      </button>
+      <button
+        @click="mint"
+        class="btn btn-lg btn-outline-primary"
+        type="button"
+      >
+        mint
       </button>
     </div>
   </div>
