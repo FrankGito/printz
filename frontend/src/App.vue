@@ -5,7 +5,9 @@ import { onMounted, ref } from "vue";
 import { watchEffect } from "vue";
 import { getOwnerOf } from "./composables/usePsp34.ts";
 import { BN } from "@polkadot/util";
-import FileUploader from './components/FileUploader.vue'
+import FileUploader from "./components/FileUploader.vue";
+import Navbar from "./components/Navbar.vue";
+import Card from "./components/Card.vue";
 
 const { debugMessage } = useControls({
   debugMessage: "I`m a Debug UI",
@@ -59,62 +61,9 @@ onMounted(() => {
 
 <template>
   <TresLeches />
-  <div class="card">
+  <Navbar />
+  <Card>
     <canvas id="canvas" ref="canvasRef" width="300px" height="300px"></canvas>
-    <button class="mint-button">
-      <div class="mint-text">Mint</div>
-    </button>
-    <FileUploader/>
-  </div>
+  </Card>
+  <FileUploader />
 </template>
-
-<style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Text+Me+One&display=swap");
-body {
-  font-family: "Text Me One", sans-serif;
-}
-.mint-button {
-  width: 150px;
-  height: 50px;
-  padding: 10px 15px;
-  background: #ffffff;
-  border-radius: 5px;
-  border: 1px black solid;
-  justify-content: center;
-  align-items: center;
-}
-
-.mint-button:hover {
-  background: #ffe5f3;
-}
-.mint-button:active {
-  background: #ffcce7;
-}
-
-.mint-text {
-  color: black;
-  font-size: 24px;
-  font-family: Text Me One;
-  font-weight: 400;
-  letter-spacing: 2.4px;
-  word-wrap: break-word;
-}
-
-.card {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 400px;
-  height: 400px;
-  padding: 25px;
-  background: white;
-  border-radius: 5px;
-  border: 1px black solid;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 25px;
-  display: inline-flex;
-}
-</style>

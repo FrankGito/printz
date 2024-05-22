@@ -1,5 +1,5 @@
 // Import reactive and ref from Vue
-import { ref, reactive } from "vue";
+import { reactive, ref } from "vue";
 import { ApiPromise, Keyring, WsProvider } from "@polkadot/api";
 import { ContractPromise } from "@polkadot/api-contract";
 import type { WeightV2 } from "@polkadot/types/interfaces";
