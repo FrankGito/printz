@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import * as THREE from "three/build/three.module.js";
-
+import * as THREE from "three";
 import { useControls, TresLeches } from "@tresjs/leches";
 import { onMounted, ref } from "vue";
 import { watchEffect } from "vue";

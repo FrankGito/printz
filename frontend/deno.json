@@ -6,7 +6,7 @@
     "@polkadot/api": "npm:@polkadot/api@latest",
     "@polkadot/api-contract": "npm:@polkadot/api-contract@latest",
     "@polkadot/util": "npm:@polkadot/util@latest",
-    "@polkadot/types/interfaces": "npm:@polkadot/types/interfaces",
+    "@polkadot/types/interfaces": "npm:@polkadot/types/interfaces"
   },
   "tasks": {
     "dev": "deno run -A --node-modules-dir npm:vite",
