@@ -1,5 +1,6 @@
 import { Application } from "jsr:@oak/oak/application";
 import { Router } from "jsr:@oak/oak/router";
+import { oakCors } from "https://deno.land/x/cors/mod.ts";
 
 const app = new Application();
 const router = new Router();
@@ -17,7 +18,8 @@ router.post("/upload", async (ctx) => {
   ctx.response.body = { message: "File uploaded successfully" };
 });
 
+app.use(oakCors({ origin: "http://localhost:5173" }));
 app.use(router.routes());
 app.use(router.allowedMethods());
 
-await app.listen({ port: 8000 });
+await app.listen({ port: 8080 });

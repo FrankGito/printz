@@ -5,6 +5,7 @@ import { onMounted, ref } from "vue";
 import { watchEffect } from "vue";
 import { getOwnerOf } from "./composables/usePsp34.ts";
 import { BN } from "@polkadot/util";
+import FileUploader from './components/FileUploader.vue'
 
 const { debugMessage } = useControls({
   debugMessage: "I`m a Debug UI",
@@ -63,6 +64,7 @@ onMounted(() => {
     <button class="mint-button">
       <div class="mint-text">Mint</div>
     </button>
+    <FileUploader/>
   </div>
 </template>
 
