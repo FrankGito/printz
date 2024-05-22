@@ -6,6 +6,7 @@
       "npm:@polkadot/api@latest": "npm:@polkadot/api@11.1.1_@polkadot+util@12.6.2_@polkadot+util-crypto@12.6.2__@polkadot+util@12.6.2__@polkadot+x-randomvalues@12.6.2___@polkadot+util@12.6.2___@polkadot+wasm-util@7.3.2____@polkadot+util@12.6.2__@polkadot+wasm-util@7.3.2___@polkadot+util@12.6.2",
       "npm:@polkadot/types": "npm:@polkadot/types@11.1.1_@polkadot+util@12.6.2_@polkadot+util-crypto@12.6.2__@polkadot+util@12.6.2__@polkadot+x-randomvalues@12.6.2___@polkadot+util@12.6.2___@polkadot+wasm-util@7.3.2____@polkadot+util@12.6.2__@polkadot+wasm-util@7.3.2___@polkadot+util@12.6.2",
       "npm:@polkadot/util@latest": "npm:@polkadot/util@12.6.2",
+      "npm:@tresjs/core": "npm:@tresjs/core@3.9.0_three@0.164.1_vue@3.4.27",
       "npm:@tresjs/leches@latest": "npm:@tresjs/leches@0.14.0_vue@3.4.27_vite@5.2.11",
       "npm:@vitejs/plugin-vue@latest": "npm:@vitejs/plugin-vue@5.0.4_vite@5.2.11_vue@3.4.27",
       "npm:three@latest": "npm:three@0.164.1",
@@ -14,6 +15,10 @@
       "npm:vue@latest": "npm:vue@3.4.27"
     },
     "npm": {
+      "@alvarosabu/utils@3.2.0": {
+        "integrity": "sha512-aoGWRfaQjOo9TUwrBA6W0zwTHktgrXy69GIFNILT4gHsqscw6+X8P6uoSlZVQFr887SPm8x3aDin5EBVq8y4pw==",
+        "dependencies": {}
+      },
       "@babel/parser@7.24.5": {
         "integrity": "sha512-EOv5IK8arwh3LI47dz1b0tKUb/1uhHAnHJOrjgtQMIpu1uXd9mlFrJg9IUgGUgZ41Ch0K8REPTYpO7B76b4vJg==",
         "dependencies": {}
@@ -621,6 +626,16 @@
         "integrity": "sha512-lE9TGgtd93fTEIoHhSdtvSFBoCsvTbqiCvQIMvX4m6BO/hESywzzTzTFMVP1doBwDDMAN4lsMfIM3X3pdmt7kQ==",
         "dependencies": {}
       },
+      "@tresjs/core@3.9.0_three@0.164.1_vue@3.4.27": {
+        "integrity": "sha512-6el70oXSduTvSA3XCI8/rQV2GzcgCLceZKA443CTU/MBPmRDULJ12q/UYl18Ij4CJ68rTqgVi0Da+WNMrs784A==",
+        "dependencies": {
+          "@alvarosabu/utils": "@alvarosabu/utils@3.2.0",
+          "@vue/devtools-api": "@vue/devtools-api@6.6.1",
+          "@vueuse/core": "@vueuse/core@10.9.0_vue@3.4.27",
+          "three": "three@0.164.1",
+          "vue": "vue@3.4.27"
+        }
+      },
       "@tresjs/leches@0.14.0_vue@3.4.27_vite@5.2.11": {
         "integrity": "sha512-X/UIeldHkx9RZdLuwGh/0XN8uM5JDOjIZH0tUodmXb+AEO/97F90FgSuRyl+xyTTOekh+z3VFavkWpoRS64KVw==",
         "dependencies": {
@@ -696,6 +711,10 @@
           "@vue/compiler-dom": "@vue/compiler-dom@3.4.27",
           "@vue/shared": "@vue/shared@3.4.27"
         }
+      },
+      "@vue/devtools-api@6.6.1": {
+        "integrity": "sha512-LgPscpE3Vs0x96PzSSB4IGVSZXZBZHpfxs+ZA1d+VEPwHdOXowy/Y2CsvCAIFrf+ssVU1pD1jidj505EpUnfbA==",
+        "dependencies": {}
       },
       "@vue/reactivity@3.4.27": {
         "integrity": "sha512-kK0g4NknW6JX2yySLpsm2jlunZJl2/RJGZ0H9ddHdfBVHcNzxmQ0sS0b09ipmBoQpY8JM2KmUw+a6sO8Zo+zIA==",
@@ -989,6 +1008,7 @@
       "npm:@polkadot/api@latest",
       "npm:@polkadot/types",
       "npm:@polkadot/util@latest",
+      "npm:@tresjs/core",
       "npm:@tresjs/leches@latest",
       "npm:three@latest",
       "npm:vue@latest"
