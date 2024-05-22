@@ -62,10 +62,19 @@ onMounted(() => {
 <template>
   <TresLeches />
   <Navbar />
-  <Card>
-    <div>
-      <canvas id="canvas" ref="canvasRef" width="300px" height="300px"></canvas>
-      <FileInput />
+  <div class="container text-center">
+    <div class="row row-cols-3">
+      <Card class="mt-3">
+        <div>
+          <canvas
+            id="canvas"
+            ref="canvasRef"
+            width="300px"
+            height="300px"
+          ></canvas>
+          <FileInput />
+        </div>
+      </Card>
     </div>
-  </Card>
+  </div>
 </template>
