@@ -11,7 +11,7 @@ async function sendFileToServer() {
   formData.append("file", file.value);
 
   try {
-    const response = await fetch("http://localhost:8080/addGlb", {
+    const response = await fetch("http://localhost:8000/addGlb", {
       method: "POST",
       body: formData,
     });
@@ -23,7 +23,7 @@ async function sendFileToServer() {
 
 async function getFileFromServer() {
   try {
-    const response = await fetch("http://localhost:8080/getGlb");
+    const response = await fetch("http://localhost:8000/getGlb");
     if (response.ok) {
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
@@ -38,6 +38,20 @@ async function getFileFromServer() {
     }
   } catch (error) {
     console.error("Error fetching file:", error);
+  }
+}
+
+async function getIpfsHashFromServer() {
+  try {
+    const response = await fetch("http://localhost:8000/getGlbHash");
+    if (response.ok) {
+      const res = await response.text()
+      console.log(res)
+    } else {
+      console.error("Failed to fetch Ipfs Hash", response.status);
+    }
+  } catch (error) {
+    console.error("Error fetching Ipfs Hash:", error);
   }
 }
 </script>
@@ -63,7 +77,14 @@ async function getFileFromServer() {
         class="btn btn-lg btn-outline-primary"
         type="button"
       >
-        Get file to server
+        Get file from server
+      </button>
+      <button
+        @click="getIpfsHashFromServer"
+        class="btn btn-lg btn-outline-primary"
+        type="button"
+      >
+        Get Ipfs Hash from server
       </button>
     </div>
   </div>

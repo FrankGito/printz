@@ -51,7 +51,7 @@ onMounted(() => {
       renderer.render(scene, camera);
     };
 
-  animate();
+    animate();
   }
 });
 </script>
@@ -72,20 +72,20 @@ onMounted(() => {
         </div>
       </Card>
       <Card class="mt-3">
-      <FileInput />
+        <FileInput />
       </Card>
-        <Card class="mt-3">
-          <TresCanvas clear-color="#82DBC5">
-            <TresPerspectiveCamera :position="[3, 3, 3]" :look-at="[0, 0, 0]" />
-            <TresMesh>
-              <TresTorusGeometry :args="[1, 0.5, 16, 32]" />
-              <TresMeshBasicMaterial color="orange" />
-            </TresMesh>
-            <TresAmbientLight :intensity="1" />
-          </TresCanvas>
-        </Card>
-      </div>
+      <Card class="mt-3">
+        <TresCanvas clear-color="#82DBC5">
+          <TresPerspectiveCamera :position="[3, 3, 3]" :look-at="[0, 0, 0]" />
+          <TresMesh>
+            <TresTorusGeometry :args="[1, 0.5, 16, 32]" />
+            <TresMeshBasicMaterial color="orange" />
+          </TresMesh>
+          <TresAmbientLight :intensity="1" />
+        </TresCanvas>
+      </Card>
     </div>
+  </div>
 </template>
 <style>
 #canvas {

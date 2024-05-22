@@ -58,5 +58,5 @@ export async function getOwnerOf(mintNumber: BN) {
   );
 
   const jsonOutput: any = output?.toJSON()!;
-  console.log(`Item (${mintNumber.toString()}) is owned by ${jsonOutput.ok}`);
+  // console.log(`Item (${mintNumber.toString()}) is owned by ${jsonOutput.ok}`);
 }

@@ -1,8 +1,3 @@
-import { defineConfig } from "npm:vite@latest";
-import { templateCompilerOptions } from "npm:@tresjs/core";
-
-import vue from "npm:@vitejs/plugin-vue@latest";
-
 import "npm:vue@latest";
 import "npm:three@latest";
 import "npm:@tresjs/leches@latest";
@@ -12,9 +7,13 @@ import "npm:@polkadot/util@latest";
 import "npm:@polkadot/types/interfaces";
 import "npm:@tresjs/core";
 
+import VueVitePlugin from "npm:@vitejs/plugin-vue@latest";
+import { defineConfig } from "npm:vite@latest";
+import { templateCompilerOptions } from "@tresjs/core";
+
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue({
+  plugins: [VueVitePlugin({
     ...templateCompilerOptions,
   })],
 });
