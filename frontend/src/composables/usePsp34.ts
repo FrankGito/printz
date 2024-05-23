@@ -46,7 +46,7 @@ export class IdBuilder {
   }
 }
 
-const CONTRACT = "5E3UaHkVu1KuJMc9w4pkqSTa6Ae42yVvxSMPFjo7ANfaVdeF";
+const CONTRACT = "5CydvuREk9hPiyAuyqCS3Txymv9KLrp7xdvyxU37BZN6PoQ8";
 
 // !TODO
 // const getOwnerOf = async (mintNumber: BN) => {
@@ -108,7 +108,21 @@ const getTotalSupply = async () => {
 
 const mint = async () => {
   const wsProvider = new WsProvider("ws://127.0.0.1:9944");
-  const api = await ApiPromise.create({ provider: wsProvider });
+  const api = await ApiPromise.create({
+    provider: wsProvider,
+    types: {
+      Id: {
+        _enum: {
+          U8: "u8",
+          U16: "u16",
+          U32: "u32",
+          U64: "u64",
+          U128: "u128",
+          Bytes: "Vec<u8>",
+        },
+      },
+    },
+  });
   const keyring = new Keyring({ type: "sr25519" });
   const alicePair = keyring.addFromUri("//Alice");
   const res = await fetch("./item.json");
@@ -117,16 +131,19 @@ const mint = async () => {
   const contract = new ContractPromise(api, abi, CONTRACT);
 
   const gasLimit: WeightV2 = api.registry.createType("WeightV2", {
-    refTime: new BN("2000000000"),
-    proofSize: new BN("200000"),
+    refTime: new BN("20000000000"),
+    proofSize: new BN("20000000"),
   }) as unknown as WeightV2;
   const storageDepositLimit = null;
 
-  const idToMint = IdBuilder.U8(2);
+  let id = api.createType("Id", {
+    "U8": 8, // use 1 for Id::U8(1)
+  });
+
   await contract.tx["psp34Mintable::mint"]({
     gasLimit,
     storageDepositLimit,
-  }, idToMint).signAndSend(alicePair, (res) => {
+  }, id).signAndSend(alicePair, (res) => {
     if (res.isInBlock) {
       console.log("Mint");
     }
