@@ -5,9 +5,9 @@
 
 #[ink::contract]
 pub mod item {
+    use ink::prelude::collections::BTreeSet;
     use ink::prelude::string::String;
     use ink::prelude::vec::Vec;
-    use ink::prelude::collections::BTreeSet;
     use ink::storage::Mapping;
     use interfaces::id::Id;
     use interfaces::psp34::PSP34;
@@ -66,16 +66,20 @@ pub mod item {
             key: Vec<u8>,
             value: Vec<u8>,
         ) -> Result<(), PSP34Error> {
-            if !self.token_owner.contains(&id) {
-                self.attributes.insert((&id, &key), &value);
-                Self::env().emit_event(AttributeSet {
-                    id,
-                    key,
-                    data: value,
-                });
-                Ok(())
+            if let Some(token_owner) = self.token_owner.get(&id) {
+                if token_owner == self.env().caller() {
+                    self.attributes.insert((&id, &key), &value);
+                    Self::env().emit_event(AttributeSet {
+                        id,
+                        key,
+                        data: value,
+                    });
+                    Ok(())
+                } else {
+                    Err(PSP34Error::Custom(String::from("Token already minted")))
+                }
             } else {
-                Err(PSP34Error::Custom(String::from("Token already minted")))
+                Err(PSP34Error::Custom(String::from("Token owner not found")))
             }
         }
 
@@ -84,9 +88,10 @@ pub mod item {
         }
 
         fn has_specific_approval(&self, owner: AccountId, operator: AccountId, id: Id) -> bool {
-            self.approvals.get((owner, operator)).map(
-                |allowance: BTreeSet<Id>| allowance.contains(&id)
-            ).unwrap_or(false)
+            self.approvals
+                .get((owner, operator))
+                .map(|allowance: BTreeSet<Id>| allowance.contains(&id))
+                .unwrap_or(false)
         }
     }
 
@@ -110,40 +115,56 @@ pub mod item {
         #[ink(message)]
         fn allowance(&self, owner: AccountId, operator: AccountId, id: Option<Id>) -> bool {
             match id {
-                None    => self.has_all_approval(owner, operator),
-                Some(x) => self.has_all_approval(owner, operator) || self.has_specific_approval(owner, operator, x)
+                None => self.has_all_approval(owner, operator),
+                Some(x) => {
+                    self.has_all_approval(owner, operator)
+                        || self.has_specific_approval(owner, operator, x)
+                }
             }
         }
 
         #[ink(message)]
         fn transfer(&mut self, to: AccountId, id: Id, _data: Vec<u8>) -> Result<(), PSP34Error> {
             let caller = self.env().caller();
-            self.token_owner.get(&id).map(|owner| {
-                if owner != caller && !self.allowance(owner, caller, Some(id.clone())) {
-                    return Err(PSP34Error::NotApproved)
-                }
-                let new_count_owner = self.owned_tokens_count.get(owner).and_then(|x| x.checked_sub(1)).filter(|x| x > &0u32).unwrap_or(0u32);
-                self.owned_tokens_count.insert(owner, &new_count_owner);
-                self.token_owner.insert(id.clone(), &to);
-                let new_count_to = self.owned_tokens_count.get(to).and_then(|x| x.checked_add(1)).filter(|x| x > &0u32).unwrap_or(1u32);
-                self.owned_tokens_count.insert(to, &new_count_to);
+            self.token_owner
+                .get(&id)
+                .map(|owner| {
+                    if owner != caller && !self.allowance(owner, caller, Some(id.clone())) {
+                        return Err(PSP34Error::NotApproved);
+                    }
+                    let new_count_owner = self
+                        .owned_tokens_count
+                        .get(owner)
+                        .and_then(|x| x.checked_sub(1))
+                        .filter(|x| x > &0u32)
+                        .unwrap_or(0u32);
+                    self.owned_tokens_count.insert(owner, &new_count_owner);
+                    self.token_owner.insert(id.clone(), &to);
+                    let new_count_to = self
+                        .owned_tokens_count
+                        .get(to)
+                        .and_then(|x| x.checked_add(1))
+                        .filter(|x| x > &0u32)
+                        .unwrap_or(1u32);
+                    self.owned_tokens_count.insert(to, &new_count_to);
 
-                if self.has_all_approval(owner, caller) && new_count_owner == 0 {
-                    self.all_approvals.insert((owner, caller), &false);
-                }
+                    if self.has_all_approval(owner, caller) && new_count_owner == 0 {
+                        self.all_approvals.insert((owner, caller), &false);
+                    }
 
-                if let Some(mut spec_approvals) = self.approvals.get((owner, caller)) {
-                    spec_approvals.remove(&id);
-                    self.approvals.insert((owner, caller), &spec_approvals);
-                }
+                    if let Some(mut spec_approvals) = self.approvals.get((owner, caller)) {
+                        spec_approvals.remove(&id);
+                        self.approvals.insert((owner, caller), &spec_approvals);
+                    }
 
-                Self::env().emit_event(Transfer {
-                    from: Some(caller),
-                    to: Some(to),
-                    id,
-                });
-                Ok(())
-            }).unwrap_or(Err(PSP34Error::TokenNotExists))
+                    Self::env().emit_event(Transfer {
+                        from: Some(caller),
+                        to: Some(to),
+                        id,
+                    });
+                    Ok(())
+                })
+                .unwrap_or(Err(PSP34Error::TokenNotExists))
         }
 
         #[ink(message)]
@@ -155,7 +176,8 @@ pub mod item {
         ) -> Result<(), PSP34Error> {
             if let Some(x) = id.clone() {
                 let caller: AccountId = self.env().caller();
-                let owner: AccountId = self.owner_of(x.clone()).ok_or(PSP34Error::TokenNotExists)?;
+                let owner: AccountId =
+                    self.owner_of(x.clone()).ok_or(PSP34Error::TokenNotExists)?;
 
                 if owner == operator {
                     return Err(PSP34Error::SelfApprove);
@@ -173,15 +195,26 @@ pub mod item {
                     }
                     self.approvals.insert((owner, operator), &spec_approvals);
                 } else if approved {
-                    self.approvals.insert((owner, operator), &BTreeSet::from([x.clone()]));
+                    self.approvals
+                        .insert((owner, operator), &BTreeSet::from([x.clone()]));
                 };
-                
-                Self::env().emit_event(Approval { owner, operator, id, approved });
+
+                Self::env().emit_event(Approval {
+                    owner,
+                    operator,
+                    id,
+                    approved,
+                });
             } else {
                 let caller: AccountId = self.env().caller();
                 self.all_approvals.insert((caller, operator), &approved);
 
-                Self::env().emit_event(Approval { owner: caller, operator, id, approved });
+                Self::env().emit_event(Approval {
+                    owner: caller,
+                    operator,
+                    id,
+                    approved,
+                });
             }
 
             Ok(())
