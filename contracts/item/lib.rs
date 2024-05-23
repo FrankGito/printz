@@ -66,6 +66,9 @@ pub mod item {
             key: Vec<u8>,
             value: Vec<u8>,
         ) -> Result<(), PSP34Error> {
+            if self.attributes.get((&id, &key)).is_some() {
+                return Err(PSP34Error::Custom(String::from("Attribute is already set")));
+            }
             if let Some(token_owner) = self.token_owner.get(&id) {
                 if token_owner == self.env().caller() {
                     self.attributes.insert((&id, &key), &value);
