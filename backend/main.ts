@@ -2,6 +2,7 @@ import { Application } from "jsr:@oak/oak/application";
 import { Router } from "jsr:@oak/oak/router";
 import { oakCors } from "https://deno.land/x/cors@v1.2.2/mod.ts";
 import { generateIpfsHash } from "./ipfs.ts";
+import { insert_ipfs_data } from "./postgres.ts";
 
 const app = new Application();
 const router = new Router();
@@ -30,6 +31,11 @@ router.get("/getGlbHash", async (ctx) => {
   const ipfsHash = await generateIpfsHash();
   ctx.response.headers.set("Content-Type", "text/plain");
   ctx.response.body = ipfsHash;
+});
+
+router.post("/postIpfsData", async (ctx) => {
+  const ipfsHash = await generateIpfsHash() || "";
+  await insert_ipfs_data("cube3.glb", ipfsHash);
 });
 
 app.use(oakCors({ origin: "http://localhost:5173" }));

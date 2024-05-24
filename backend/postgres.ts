@@ -8,7 +8,18 @@ const client = new Client({
   password: "postgres",
 });
 
-const result = await client.queryArray("SELECT * FROM ipfs_data");
-console.log(result.rows); // [[1, 'Carlos'], [2, 'John'], ...]
+async function insert_ipfs_data(name: string, uri: string) {
+  await client.connect();
+  await client.queryArray(
+    `INSERT INTO ipfs_data (name, uri) VALUES ('${name}', '${uri}');`,
+  );
+  client.end();
+}
+async function get_ipfs_data() {
+  await client.connect();
+  const result = await client.queryArray("SELECT * FROM ipfs_data");
+  client.end();
+  return result;
+}
 
-await client.connect();
+export { get_ipfs_data, insert_ipfs_data };
