@@ -7,6 +7,28 @@ import { insert_ipfs_data } from "./postgres.ts";
 const app = new Application();
 const router = new Router();
 
+router.post("/upload", async (ctx) => {
+  const formData = await ctx.request.body.formData();
+  const file = formData.get("file") as File;
+
+  const uploadsDir = "./uploads";
+  const files = Deno.readDirSync(uploadsDir);
+  const fileNames = Array.from(files).map((file) => file.name);
+  const fileNumbers = fileNames.map((name) => parseInt(name.split("_")[0]));
+  const maxFileNumber = Math.max(...fileNumbers);
+  const nextCount = isNaN(maxFileNumber) ? 1 : maxFileNumber + 1;
+
+  const filePath = `${uploadsDir}/${nextCount}_printz.glb`;
+  const content = await Deno.readFile(file);
+  const array = new Uint8Array(content);
+  await Deno.writeFile(
+    filePath,
+    array,
+  );
+
+  ctx.response.body = { message: "File uploaded successfully" };
+});
+
 router.post("/addGlb", async (ctx) => {
   const formData = await ctx.request.body.formData();
   const file = formData.get("file") as File;
