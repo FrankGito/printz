@@ -42,6 +42,7 @@ const getTotalSupply = async () => {
 
   const jsonOutput: any = output?.toJSON()!;
   console.log(`Item has a total Supply of ${jsonOutput.ok}`);
+  return jsonOutput.ok;
 };
 
 const mint = async (id: number) => {

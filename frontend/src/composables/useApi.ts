@@ -47,6 +47,7 @@ async function getIpfsHashFromServer() {
     if (response.ok) {
       const res = await response.text();
       console.log(res);
+      return res;
     } else {
       console.error("Failed to fetch Ipfs Hash", response.status);
     }
