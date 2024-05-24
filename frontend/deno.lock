@@ -10,6 +10,7 @@
       "npm:@tresjs/core": "npm:@tresjs/core@3.9.0_three@0.164.1_vue@3.4.27",
       "npm:@tresjs/leches@latest": "npm:@tresjs/leches@0.14.0_vue@3.4.27_vite@5.2.11",
       "npm:@vitejs/plugin-vue@latest": "npm:@vitejs/plugin-vue@5.0.4_vite@5.2.11_vue@3.4.27",
+      "npm:marked@latest": "npm:marked@12.0.2",
       "npm:three@latest": "npm:three@0.164.1",
       "npm:vite": "npm:vite@5.2.11",
       "npm:vite@latest": "npm:vite@5.2.11",
@@ -951,6 +952,10 @@
         "dependencies": {
           "@jridgewell/sourcemap-codec": "@jridgewell/sourcemap-codec@1.4.15"
         }
+      },
+      "marked@12.0.2": {
+        "integrity": "sha512-qXUm7e/YKFoqFPYPa3Ukg9xlI5cyAtGmyEIzMfW//m6kXwCy2Ps9DYf5ioijFKQ8qyuscrHoY04iJGctu2Kg0Q==",
+        "dependencies": {}
       },
       "meshoptimizer@0.18.1": {
         "integrity": "sha512-ZhoIoL7TNV4s5B6+rx5mC//fw8/POGyNxS/DZyCJeiZ12ScLfVwRE/GfsxwiTkMYYD5DmK2/JXnEVXqL4rF+Sw==",

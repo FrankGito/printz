@@ -1,7 +1,9 @@
 <template>
   <nav class="navbar navbar-expand-lg bg-light" data-bs-theme="light">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Printz</a>
+      <RouterLink class="navbar-brand" to="/">
+      Printz
+      </RouterLink>
       <button
         class="navbar-toggler collapsed"
         type="button"
@@ -16,10 +18,10 @@
       <div class="navbar-collapse collapse" id="navbarColor03" style="">
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
-                <RouterLink  class="nav-link active" to="/">Home
+            <RouterLink class="nav-link active" to="/"
+              >Home
               <span class="visually-hidden">(current)</span>
             </RouterLink>
-
           </li>
           <li class="nav-item">
             <RouterLink class="nav-link" to="/about">About</RouterLink>

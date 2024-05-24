@@ -9,7 +9,8 @@
     "@polkadot/types/interfaces": "npm:@polkadot/types/interfaces",
     "@tresjs/core": "npm:@tresjs/core",
     "@tresjs/cientos":"npm:@tresjs/cientos",
-    "@vue-router":"npm:vue-router@4"
+    "@vue-router":"npm:vue-router@4",
+    "marked": "npm:marked@latest"
   },
   "tasks": {
     "dev": "deno run -A --node-modules-dir npm:vite",

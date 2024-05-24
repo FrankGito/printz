@@ -3,11 +3,9 @@ import * as THREE from "three";
 import { TresCanvas } from "@tresjs/core";
 import { OrbitControls, useGLTF } from "@tresjs/cientos";
 
-
 import Card from "./Card.vue";
 import FileInput from "./FileInput.vue";
 import Canvas from "./Canvas.vue";
-
 </script>
 <template>
   <div class="container text-center">

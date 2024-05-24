@@ -9,5 +9,5 @@ useLeches();
 <template>
   <TresLeches />
   <Navbar />
-  <RouterView/>
+  <RouterView />
 </template>
