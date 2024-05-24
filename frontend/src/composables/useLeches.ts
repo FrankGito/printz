@@ -62,6 +62,19 @@ const useLeches = () => {
         await getFileFromServer();
       },
     },
+    model: {
+      value: "EmptyCube",
+      options: [{
+        text: "EmptyCube",
+        value: "EmptyCube",
+      }, {
+        text: "Metal Gear Solid",
+        value: "metal-gear-solid",
+      }, {
+        text: "Legend of Zelda",
+        value: "legend-of-zelda",
+      }],
+    },
   });
 };
 
