@@ -1,62 +1,11 @@
 <script setup>
-import { ref, onMounted } from "vue";
-import { getTotalSupply, mint, setAttribute } from '../composables/usePsp34.ts'
-import { BN } from "@polkadot/util";
-const file = ref(null);
-
-function handleFileUpload(event) {
-  file.value = event.target.files[0];
-}
-
-async function sendFileToServer() {
-  const formData = new FormData();
-  formData.append("file", file.value);
-
-  try {
-    const response = await fetch("http://localhost:8000/addGlb", {
-      method: "POST",
-      body: formData,
-    });
-    console.log("File sent successfully");
-  } catch (error) {
-    console.error("Error sending file:", error);
-  }
-}
-
-async function getFileFromServer() {
-  try {
-    const response = await fetch("http://localhost:8000/getGlb");
-    if (response.ok) {
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", "cube.glb");
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } else {
-      console.error("Failed to fetch file:", response.status);
-    }
-  } catch (error) {
-    console.error("Error fetching file:", error);
-  }
-}
-
-async function getIpfsHashFromServer() {
-  try {
-    const response = await fetch("http://localhost:8000/getGlbHash");
-    if (response.ok) {
-      const res = await response.text()
-      console.log(res)
-    } else {
-      console.error("Failed to fetch Ipfs Hash", response.status);
-    }
-  } catch (error) {
-    console.error("Error fetching Ipfs Hash:", error);
-  }
-}
-
+import { getTotalSupply, mint, setAttribute } from "../composables/usePsp34.ts";
+import {
+  handleFileUpload,
+  sendFileToServer,
+  getFileFromServer,
+  getIpfsHashFromServer,
+} from "../composables/useApi.ts";
 </script>
 <template>
   <div>
@@ -94,21 +43,21 @@ async function getIpfsHashFromServer() {
         class="btn btn-lg btn-outline-primary"
         type="button"
       >
-        Get total supply from contract 
+        Get total supply from contract
       </button>
       <button
-        @click="mint"
+        @click="mint(12)"
         class="btn btn-lg btn-outline-primary"
         type="button"
       >
-        mint
+        mint to contract
       </button>
       <button
-        @click="setAttribute"
+        @click="setAttribute(12, 'uri', 'asdfasdf')"
         class="btn btn-lg btn-outline-primary"
         type="button"
       >
-        mint
+        setAttribute to contract
       </button>
     </div>
   </div>

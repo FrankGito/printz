@@ -1,6 +1,6 @@
-// Import reactive and ref from Vue
 import { ApiPromise, Keyring, WsProvider } from "@polkadot/api";
 import { ContractPromise } from "@polkadot/api-contract";
+// @ts-ignore It has ^¹
 import type { WeightV2 } from "@polkadot/types/interfaces";
 import { BN } from "@polkadot/util";
 
@@ -13,39 +13,6 @@ interface Id {
   u64?: number | string | BN;
   u128?: string | number | BN;
   bytes?: Array<(number | string | BN)>;
-}
-
-class IdBuilder {
-  static U8(value: number | string | BN): Id {
-    return {
-      u8: value,
-    };
-  }
-  static U16(value: number | string | BN): Id {
-    return {
-      u16: value,
-    };
-  }
-  static U32(value: number | string | BN): Id {
-    return {
-      u32: value,
-    };
-  }
-  static U64(value: number | string | BN): Id {
-    return {
-      u64: value,
-    };
-  }
-  static U128(value: string | number | BN): Id {
-    return {
-      u128: value,
-    };
-  }
-  static Bytes(value: Array<(number | string | BN)>): Id {
-    return {
-      bytes: value,
-    };
-  }
 }
 
 const getTotalSupply = async () => {
@@ -64,6 +31,7 @@ const getTotalSupply = async () => {
   }) as unknown as WeightV2;
   const storageDepositLimit = null;
 
+  // @ts-ignore It does exists
   const { output } = await contract.query["psp34::totalSupply"](
     alicePair.address,
     {
@@ -76,7 +44,7 @@ const getTotalSupply = async () => {
   console.log(`Item has a total Supply of ${jsonOutput.ok}`);
 };
 
-const mint = async () => {
+const mint = async (id: number) => {
   const wsProvider = new WsProvider("ws://127.0.0.1:9944");
   const api = await ApiPromise.create({
     provider: wsProvider,
@@ -106,14 +74,15 @@ const mint = async () => {
   }) as unknown as WeightV2;
   const storageDepositLimit = null;
 
-  let id = api.createType("Id", {
-    "U8": 4, // use 1 for Id::U8(1)
+  const id_convert = api.createType("Id", {
+    "U8": id, // use 1 for Id::U8(1)
   });
 
+  // @ts-ignore It does exists
   await contract.tx["psp34Mintable::mint"]({
     gasLimit,
     storageDepositLimit,
-  }, id).signAndSend(alicePair, (res) => {
+  }, id_convert).signAndSend(alicePair, (res: any) => {
     if (res.isInBlock) {
       console.log("Mint");
     }
@@ -124,7 +93,7 @@ const mint = async () => {
   });
 };
 
-const setAttribute = async () => {
+const setAttribute = async (id: number, key: string, value: string) => {
   const wsProvider = new WsProvider("ws://127.0.0.1:9944");
   const api = await ApiPromise.create({
     provider: wsProvider,
@@ -154,30 +123,31 @@ const setAttribute = async () => {
   }) as unknown as WeightV2;
   const storageDepositLimit = null;
 
-  let id = api.createType("Id", {
-    "U8": 4, // use 1 for Id::U8(1)
+  const id_convert = api.createType("Id", {
+    "U8": id,
   });
 
-  const key = "uri";
+  // const key = "uri";
   const keyHex = [];
   for (let i = 0; i < key.length; i++) {
     keyHex.push("0x" + key.charCodeAt(i).toString(16));
   }
-  const value = "QmQdrFfgHrBBSNZB9C5Wjaa7vzxxccfEcj47RhZSwsymZ2";
+  // const value = "QmQdrFfgHrBBSNZB9C5Wjaa7vzxxccfEcj47RhZSwsymZ2";
   const valueHex = [];
   for (let i = 0; i < value.length; i++) {
     valueHex.push("0x" + value.charCodeAt(i).toString(16));
   }
 
+  // @ts-ignore It does exists
   await contract.tx["setAttribute"](
     {
       gasLimit,
       storageDepositLimit,
     },
-    id,
+    id_convert,
     keyHex,
     valueHex,
-  ).signAndSend(alicePair, (res) => {
+  ).signAndSend(alicePair, (res: any) => {
     if (res.isInBlock) {
       console.log("is in block");
     }
