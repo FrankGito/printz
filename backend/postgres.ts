@@ -8,10 +8,10 @@ const client = new Client({
   password: "postgres",
 });
 
-async function insert_ipfs_data(name: string, uri: string) {
+async function insert_ipfs_data(tokenId: string, name: string, uri: string) {
   await client.connect();
   await client.queryArray(
-    `INSERT INTO ipfs_data (name, uri) VALUES ('${name}', '${uri}');`,
+    `INSERT INTO ipfs_data (tokenId, name, uri) VALUES ('${tokenId}','${name}', '${uri}');`,
   );
   client.end();
 }

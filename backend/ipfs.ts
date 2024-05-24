@@ -1,6 +1,6 @@
-const generateIpfsHash = async (): Promise<string | null> => {
+const generateIpfsHash = async (filePath: string): Promise<string | null> => {
   const command = new Deno.Command("ipfs", {
-    args: ["add", "./cube.glb"],
+    args: ["add", filePath],
     stdin: "piped",
     stdout: "piped",
   });
