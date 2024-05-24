@@ -13,6 +13,7 @@
       "npm:three@latest": "npm:three@0.164.1",
       "npm:vite": "npm:vite@5.2.11",
       "npm:vite@latest": "npm:vite@5.2.11",
+      "npm:vue-router@4": "npm:vue-router@4.3.2_vue@3.4.27",
       "npm:vue@latest": "npm:vue@3.4.27"
     },
     "npm": {
@@ -20,8 +21,8 @@
         "integrity": "sha512-aoGWRfaQjOo9TUwrBA6W0zwTHktgrXy69GIFNILT4gHsqscw6+X8P6uoSlZVQFr887SPm8x3aDin5EBVq8y4pw==",
         "dependencies": {}
       },
-      "@babel/parser@7.24.5": {
-        "integrity": "sha512-EOv5IK8arwh3LI47dz1b0tKUb/1uhHAnHJOrjgtQMIpu1uXd9mlFrJg9IUgGUgZ41Ch0K8REPTYpO7B76b4vJg==",
+      "@babel/parser@7.24.6": {
+        "integrity": "sha512-eNZXdfU35nJC2h24RznROuOpO94h6x8sg9ju0tT9biNtLZ2vuP8SduLqqV+/8+cebSLV9SJEAN5Z3zQbJG/M+Q==",
         "dependencies": {}
       },
       "@esbuild/aix-ppc64@0.20.2": {
@@ -597,15 +598,15 @@
         "integrity": "sha512-nKu8pDrE3LNCEgJjZe1iGXzaD6OSIDD4Xzz/yo4KO9mQ6LBvf49BVrt4qxBFGL6++NneLiWUZGoh+VSd4PyVIg==",
         "dependencies": {}
       },
-      "@substrate/connect-known-chains@1.1.4": {
-        "integrity": "sha512-iT+BdKqvKl/uBLd8BAJysFM1BaMZXRkaXBP2B7V7ob/EyNs5h0EMhTVbO6MJxV/IEOg5OKsyl6FUqQK7pKnqyw==",
+      "@substrate/connect-known-chains@1.1.5": {
+        "integrity": "sha512-GCdDMs5q9xDYyP/KEwrlWMdqv8OIPjuVMZvNowvUrvEFo5d+x+VqfRPzyl/RbV+snRQVWTTacRydE7GqyjCYPQ==",
         "dependencies": {}
       },
       "@substrate/connect@0.8.10_smoldot@2.0.22": {
         "integrity": "sha512-DIyQ13DDlXqVFnLV+S6/JDgiGowVRRrh18kahieJxhgvzcWicw5eLc6jpfQ0moVVLBYkO7rctB5Wreldwpva8w==",
         "dependencies": {
           "@substrate/connect-extension-protocol": "@substrate/connect-extension-protocol@2.0.0",
-          "@substrate/connect-known-chains": "@substrate/connect-known-chains@1.1.4",
+          "@substrate/connect-known-chains": "@substrate/connect-known-chains@1.1.5",
           "@substrate/light-client-extension-helpers": "@substrate/light-client-extension-helpers@0.0.6_smoldot@2.0.22_rxjs@7.8.1",
           "smoldot": "smoldot@2.0.22"
         }
@@ -618,7 +619,7 @@
           "@polkadot-api/observable-client": "@polkadot-api/observable-client@0.1.0_rxjs@7.8.1",
           "@polkadot-api/substrate-client": "@polkadot-api/substrate-client@0.0.1",
           "@substrate/connect-extension-protocol": "@substrate/connect-extension-protocol@2.0.0",
-          "@substrate/connect-known-chains": "@substrate/connect-known-chains@1.1.4",
+          "@substrate/connect-known-chains": "@substrate/connect-known-chains@1.1.5",
           "rxjs": "rxjs@7.8.1",
           "smoldot": "smoldot@2.0.22"
         }
@@ -723,7 +724,7 @@
       "@vue/compiler-core@3.4.27": {
         "integrity": "sha512-E+RyqY24KnyDXsCuQrI+mlcdW3ALND6U7Gqa/+bVwbcpcR3BRRIckFoz7Qyd4TTlnugtwuI7YgjbvsLmxb+yvg==",
         "dependencies": {
-          "@babel/parser": "@babel/parser@7.24.5",
+          "@babel/parser": "@babel/parser@7.24.6",
           "@vue/shared": "@vue/shared@3.4.27",
           "entities": "entities@4.5.0",
           "estree-walker": "estree-walker@2.0.2",
@@ -740,7 +741,7 @@
       "@vue/compiler-sfc@3.4.27": {
         "integrity": "sha512-nDwntUEADssW8e0rrmE0+OrONwmRlegDA1pD6QhVeXxjIytV03yDqTey9SBDiALsvAd5U4ZrEKbMyVXhX6mCGA==",
         "dependencies": {
-          "@babel/parser": "@babel/parser@7.24.5",
+          "@babel/parser": "@babel/parser@7.24.6",
           "@vue/compiler-core": "@vue/compiler-core@3.4.27",
           "@vue/compiler-dom": "@vue/compiler-dom@3.4.27",
           "@vue/compiler-ssr": "@vue/compiler-ssr@3.4.27",
@@ -1139,6 +1140,13 @@
           "vue": "vue@3.4.27"
         }
       },
+      "vue-router@4.3.2_vue@3.4.27": {
+        "integrity": "sha512-hKQJ1vDAZ5LVkKEnHhmm1f9pMiWIBNGF5AwU67PdH7TyXCj/a4hTccuUuYCAMgJK6rO/NVYtQIEN3yL8CECa7Q==",
+        "dependencies": {
+          "@vue/devtools-api": "@vue/devtools-api@6.6.1",
+          "vue": "vue@3.4.27"
+        }
+      },
       "vue@3.4.27": {
         "integrity": "sha512-8s/56uK6r01r1icG/aEOHqyMVxd1bkYcSe9j8HcKtr/xTOFWvnzIVTehNW+5Yt89f+DLBe4A569pnZLS5HzAMA==",
         "dependencies": {
@@ -1174,6 +1182,7 @@
       "npm:@tresjs/core",
       "npm:@tresjs/leches@latest",
       "npm:three@latest",
+      "npm:vue-router@4",
       "npm:vue@latest"
     ]
   }

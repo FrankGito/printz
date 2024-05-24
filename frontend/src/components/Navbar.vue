@@ -16,13 +16,14 @@
       <div class="navbar-collapse collapse" id="navbarColor03" style="">
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
-            <a class="nav-link active" href="#"
-              >Home
+                <RouterLink  class="nav-link active" to="/">Home
               <span class="visually-hidden">(current)</span>
-            </a>
+            </RouterLink>
+
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
+            <RouterLink class="nav-link" to="/about">About</RouterLink>
+            <!-- <a class="nav-link" href="#">About</a> -->
           </li>
         </ul>
       </div>
