@@ -4,6 +4,8 @@ import { ContractPromise } from "@polkadot/api-contract";
 import type { WeightV2 } from "@polkadot/types/interfaces";
 import { BN } from "@polkadot/util";
 
+const CONTRACT = "5CjF5TNJpYQYhHjiYtVDSaaXnEtqfL6DryUAWayRs3hWXZpU";
+
 interface Id {
   u8?: number | string | BN;
   u16?: number | string | BN;
@@ -13,7 +15,7 @@ interface Id {
   bytes?: Array<(number | string | BN)>;
 }
 
-export class IdBuilder {
+class IdBuilder {
   static U8(value: number | string | BN): Id {
     return {
       u8: value,
@@ -45,38 +47,6 @@ export class IdBuilder {
     };
   }
 }
-
-const CONTRACT = "5CydvuREk9hPiyAuyqCS3Txymv9KLrp7xdvyxU37BZN6PoQ8";
-
-// !TODO
-// const getOwnerOf = async (mintNumber: BN) => {
-//   const wsProvider = new WsProvider("ws://127.0.0.1:9944");
-//   const api = await ApiPromise.create({ provider: wsProvider });
-//   const keyring = new Keyring({ type: "sr25519" });
-//   const alicePair = keyring.addFromUri("//Alice");
-//   const res = await fetch("./item.json");
-//   const abi = await res.json();
-//
-//   const contract = new ContractPromise(api, abi, CONTRACT);
-//
-//   const gasLimit: WeightV2 = api.registry.createType("WeightV2", {
-//     refTime: new BN("2000000000"),
-//     proofSize: new BN("200000"),
-//   }) as unknown as WeightV2;
-//   const storageDepositLimit = null;
-//
-//   const { output } = await contract.query["psp34::ownerOf"](
-//     alicePair.address,
-//     {
-//       gasLimit,
-//       storageDepositLimit,
-//     },
-//     mintNumber,
-//   );
-
-// const jsonOutput: any = output?.toJSON()!;
-// console.log(`Item (${mintNumber.toString()}) is owned by ${jsonOutput.ok}`);
-// };
 
 const getTotalSupply = async () => {
   const wsProvider = new WsProvider("ws://127.0.0.1:9944");
@@ -137,7 +107,7 @@ const mint = async () => {
   const storageDepositLimit = null;
 
   let id = api.createType("Id", {
-    "U8": 8, // use 1 for Id::U8(1)
+    "U8": 5, // use 1 for Id::U8(1)
   });
 
   await contract.tx["psp34Mintable::mint"]({
@@ -154,4 +124,58 @@ const mint = async () => {
   });
 };
 
-export { /*getOwnerOf,*/ getTotalSupply, mint };
+const setAttribute = async () => {
+  const wsProvider = new WsProvider("ws://127.0.0.1:9944");
+  const api = await ApiPromise.create({
+    provider: wsProvider,
+    types: {
+      Id: {
+        _enum: {
+          U8: "u8",
+          U16: "u16",
+          U32: "u32",
+          U64: "u64",
+          U128: "u128",
+          Bytes: "Vec<u8>",
+        },
+      },
+    },
+  });
+  const keyring = new Keyring({ type: "sr25519" });
+  const alicePair = keyring.addFromUri("//Alice");
+  const res = await fetch("./item.json");
+  const abi = await res.json();
+
+  const contract = new ContractPromise(api, abi, CONTRACT);
+
+  const gasLimit: WeightV2 = api.registry.createType("WeightV2", {
+    refTime: new BN("20000000000"),
+    proofSize: new BN("20000000"),
+  }) as unknown as WeightV2;
+  const storageDepositLimit = null;
+
+  let id = api.createType("Id", {
+    "U8": 5, // use 1 for Id::U8(1)
+  });
+
+  const key = "a".charCodeAt(0).toString(16);
+  const value = "a".charCodeAt(0).toString(16);
+  await contract.tx["setAttribute"](
+    {
+      gasLimit,
+      storageDepositLimit,
+    },
+    id,
+    [key],
+    [value],
+  ).signAndSend(alicePair, (res) => {
+    if (res.isInBlock) {
+      console.log("is in block");
+    }
+    if (res.isFinalized) {
+      console.log("is isFinalized");
+    }
+  });
+};
+
+export { getTotalSupply, mint, setAttribute };

@@ -8,7 +8,6 @@
       "npm:@polkadot/util@latest": "npm:@polkadot/util@12.6.2",
       "npm:@tresjs/core": "npm:@tresjs/core@3.9.0_three@0.164.1_vue@3.4.27",
       "npm:@tresjs/leches@latest": "npm:@tresjs/leches@0.14.0_vue@3.4.27_vite@5.2.11",
-      "npm:@types/node": "npm:@types/node@18.16.19",
       "npm:@vitejs/plugin-vue@latest": "npm:@vitejs/plugin-vue@5.0.4_vite@5.2.11_vue@3.4.27",
       "npm:three@latest": "npm:three@0.164.1",
       "npm:vite": "npm:vite@5.2.11",

@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import { getTotalSupply, mint } from '../composables/usePsp34.ts'
+import { getTotalSupply, mint, setAttribute } from '../composables/usePsp34.ts'
 import { BN } from "@polkadot/util";
 const file = ref(null);
 
@@ -56,6 +56,7 @@ async function getIpfsHashFromServer() {
     console.error("Error fetching Ipfs Hash:", error);
   }
 }
+
 </script>
 <template>
   <div>
@@ -97,6 +98,13 @@ async function getIpfsHashFromServer() {
       </button>
       <button
         @click="mint"
+        class="btn btn-lg btn-outline-primary"
+        type="button"
+      >
+        mint
+      </button>
+      <button
+        @click="setAttribute"
         class="btn btn-lg btn-outline-primary"
         type="button"
       >
