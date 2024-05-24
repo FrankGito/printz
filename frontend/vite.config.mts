@@ -10,6 +10,7 @@ import "npm:@polkadot/api-contract@latest";
 import "npm:@polkadot/util@latest";
 import "npm:@polkadot/types/interfaces";
 import "npm:@tresjs/core";
+import "npm:@tresjs/cientos";
 
 // https://vitejs.dev/config/
 export default defineConfig({
