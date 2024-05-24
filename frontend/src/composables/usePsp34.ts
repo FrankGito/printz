@@ -4,7 +4,7 @@ import { ContractPromise } from "@polkadot/api-contract";
 import type { WeightV2 } from "@polkadot/types/interfaces";
 import { BN } from "@polkadot/util";
 
-const CONTRACT = "5CjF5TNJpYQYhHjiYtVDSaaXnEtqfL6DryUAWayRs3hWXZpU";
+const CONTRACT = "5EFeZLQT55mnwv5znLeMqCdm6SsNWt4t5hcErtE5ao9FPFaf";
 
 interface Id {
   u8?: number | string | BN;
@@ -107,7 +107,7 @@ const mint = async () => {
   const storageDepositLimit = null;
 
   let id = api.createType("Id", {
-    "U8": 5, // use 1 for Id::U8(1)
+    "U8": 4, // use 1 for Id::U8(1)
   });
 
   await contract.tx["psp34Mintable::mint"]({
@@ -155,19 +155,28 @@ const setAttribute = async () => {
   const storageDepositLimit = null;
 
   let id = api.createType("Id", {
-    "U8": 5, // use 1 for Id::U8(1)
+    "U8": 4, // use 1 for Id::U8(1)
   });
 
-  const key = "a".charCodeAt(0).toString(16);
-  const value = "a".charCodeAt(0).toString(16);
+  const key = "uri";
+  const keyHex = [];
+  for (let i = 0; i < key.length; i++) {
+    keyHex.push("0x" + key.charCodeAt(i).toString(16));
+  }
+  const value = "QmQdrFfgHrBBSNZB9C5Wjaa7vzxxccfEcj47RhZSwsymZ2";
+  const valueHex = [];
+  for (let i = 0; i < value.length; i++) {
+    valueHex.push("0x" + value.charCodeAt(i).toString(16));
+  }
+
   await contract.tx["setAttribute"](
     {
       gasLimit,
       storageDepositLimit,
     },
     id,
-    [key],
-    [value],
+    keyHex,
+    valueHex,
   ).signAndSend(alicePair, (res) => {
     if (res.isInBlock) {
       console.log("is in block");
