@@ -4,7 +4,7 @@ import { ContractPromise } from "@polkadot/api-contract";
 import type { WeightV2 } from "@polkadot/types/interfaces";
 import { BN } from "@polkadot/util";
 
-const CONTRACT = "5EFeZLQT55mnwv5znLeMqCdm6SsNWt4t5hcErtE5ao9FPFaf";
+const CONTRACT = "5FH5UKqDCUwWh8QJu9DMFrwFtRPogRfpDYa8udM4vpBmyKVc";
 
 interface Id {
   u8?: number | string | BN;

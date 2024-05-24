@@ -27,6 +27,7 @@ async function getFileFromServer() {
     if (response.ok) {
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
+      console.log(url);
       const link = document.createElement("a");
       link.href = url;
       link.setAttribute("download", "cube.glb");

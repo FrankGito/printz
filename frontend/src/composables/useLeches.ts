@@ -19,7 +19,16 @@ const useLeches = () => {
       size: "lg",
       onClick: async () => {
         const supply = await getTotalSupply();
-        totalSupplyRef.valeu = supply;
+        totalSupplyRef.value = supply;
+      },
+    },
+    getIpfsHashFromServer: {
+      label: "getIpfsHashFromServer",
+      type: "button",
+      size: "lg",
+      onClick: async () => {
+        const cid = await getIpfsHashFromServer();
+        cidRef.value = cid;
       },
     },
     mint: {
@@ -28,8 +37,10 @@ const useLeches = () => {
       size: "lg",
       onClick: async () => {
         const currentSupply = await getTotalSupply();
-        await mint(currentSupply.toNumber() + 1);
+        await mint(currentSupply + 1);
         const newSupply = await getTotalSupply();
+        const cid = await getIpfsHashFromServer();
+        await setAttribute(newSupply, "uri", cid!);
         totalSupplyRef.value = newSupply;
       },
     },
@@ -41,15 +52,6 @@ const useLeches = () => {
         const currentSupply = await getTotalSupply();
         const cid = await getIpfsHashFromServer();
         await setAttribute(currentSupply, "uri", cid!);
-      },
-    },
-    getIpfsHashFromServer: {
-      label: "getIpfsHashFromServer",
-      type: "button",
-      size: "lg",
-      onClick: async () => {
-        const cid = await getIpfsHashFromServer();
-        cidRef.value = cid;
       },
     },
     getFileFromServer: {
