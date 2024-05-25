@@ -16,10 +16,12 @@ shell:
 .PHONY: contracts-build
 contracts-build:
 	cd contracts/item; cargo contract build
+	cd contracts/item_sale; cargo contract build
 
 .PHONY: contracts-test
 contracts-test:
 	cd contracts/item; cargo test
+	cd contracts/item_sale; cargo test
 
 .PHONY: frontend-build
 frontend-build:

@@ -129,12 +129,12 @@ const setAttribute = async (id: number, key: string, value: string) => {
   });
 
   // const key = "uri";
-  const keyHex = [];
+  const keyHex: Array<String> = [];
   for (let i = 0; i < key.length; i++) {
     keyHex.push("0x" + key.charCodeAt(i).toString(16));
   }
   // const value = "QmQdrFfgHrBBSNZB9C5Wjaa7vzxxccfEcj47RhZSwsymZ2";
-  const valueHex = [];
+  const valueHex: Array<String> = [];
   for (let i = 0; i < value.length; i++) {
     valueHex.push("0x" + value.charCodeAt(i).toString(16));
   }
