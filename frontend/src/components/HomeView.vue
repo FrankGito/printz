@@ -8,18 +8,7 @@ import Card from "./Card.vue";
 import FileInput from "./FileInput.vue";
 import Canvas from "./Canvas.vue";
 import { handleFileUpload,  uploaded} from '../composables/useApi.ts'
-
-// const uploadedHome = ref(true);
-//
-// onMounted(()=>{
-//   console.log("Onmount ",uploaded.value )
-//   uploadedHome.value = uploaded.value;
-// })
-//
-// watch(uploaded, (value) => {
-//   console.log("Onchange ",uploaded.value )
-//   uploadedHome.value = value.value;
-// })
+import { mint } from '../composables/usePsp34.ts'
 
 </script>
 <template>
@@ -40,9 +29,10 @@ import { handleFileUpload,  uploaded} from '../composables/useApi.ts'
             id="formFile"
             type="file"
             @change="handleFileUpload"
+            :disabled="!uploaded"
           />
           <button
-            @click="mint(12)"
+            @click="mint"
             class="btn btn-lg btn-outline-primary mt-3"
             type="button"
             :disabled="uploaded"

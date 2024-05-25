@@ -3,6 +3,7 @@ import { ContractPromise } from "@polkadot/api-contract";
 // @ts-ignore It has ^¹
 import type { WeightV2 } from "@polkadot/types/interfaces";
 import { BN } from "@polkadot/util";
+import { getIpfsHashFromServer } from "./useApi.ts";
 
 const CONTRACT = "5FH5UKqDCUwWh8QJu9DMFrwFtRPogRfpDYa8udM4vpBmyKVc";
 
@@ -45,7 +46,11 @@ const getTotalSupply = async () => {
   return jsonOutput.ok;
 };
 
-const mint = async (id: number) => {
+const mint = async () => {
+  const current_mint_id = await getTotalSupply();
+  console.log(current_mint_id);
+  const next_mint_id = current_mint_id + 1;
+  console.log(next_mint_id);
   const wsProvider = new WsProvider("ws://127.0.0.1:9944");
   const api = await ApiPromise.create({
     provider: wsProvider,
@@ -76,7 +81,7 @@ const mint = async (id: number) => {
   const storageDepositLimit = null;
 
   const id_convert = api.createType("Id", {
-    "U8": id, // use 1 for Id::U8(1)
+    "U8": next_mint_id, // use 1 for Id::U8(1)
   });
 
   // @ts-ignore It does exists
@@ -88,10 +93,13 @@ const mint = async (id: number) => {
       console.log("Mint");
     }
     if (res.isFinalized) {
-      console.log(res);
       console.log("Done");
     }
   });
+  const ipfsHash = await getIpfsHashFromServer();
+  console.log("Ipfs Hash is: ", ipfsHash);
+  await setAttribute(next_mint_id, "uri", ipfsHash!);
+  console.log("Item Attributes added");
 };
 
 const setAttribute = async (id: number, key: string, value: string) => {

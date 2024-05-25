@@ -2,9 +2,11 @@
 import { ref } from "vue";
 const file = ref(null);
 const uploaded = ref(true);
-function handleFileUpload(event: any) {
+
+async function handleFileUpload(event: any) {
   file.value = event.target.files[0];
   uploaded.value = false;
+  await sendFileToServer();
 }
 
 async function sendFileToServer() {
@@ -12,7 +14,7 @@ async function sendFileToServer() {
   formData.append("file", file.value);
 
   try {
-    const response = await fetch("http://localhost:8000/addGlb", {
+    const response = await fetch("http://localhost:8000/upload", {
       method: "POST",
       body: formData,
     });
@@ -45,7 +47,7 @@ async function getFileFromServer() {
 
 async function getIpfsHashFromServer() {
   try {
-    const response = await fetch("http://localhost:8000/getGlbHash");
+    const response = await fetch("http://localhost:8000/getLatestGlbHash");
     if (response.ok) {
       const res = await response.text();
       console.log(res);
