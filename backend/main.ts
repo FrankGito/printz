@@ -40,9 +40,16 @@ router.post("/upload", async (ctx) => {
   ctx.response.body = { message: "File uploaded successfully" };
 });
 
-router.get("/getAlluploads", async () => {
+router.get("/getAllUploads", async (ctx) => {
   const data = await get_ipfs_data();
-  console.log(data.rows);
+  const uploads = data.rows.map((row) => {
+    return {
+      id: row[0],
+      filename: row[1],
+      uri: row[2],
+    };
+  });
+  ctx.response.body = { uploads };
 });
 
 router.post("/addGlb", async (ctx) => {
