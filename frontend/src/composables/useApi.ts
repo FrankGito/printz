@@ -1,9 +1,10 @@
 // @ts-ignore it has
 import { ref } from "vue";
 const file = ref(null);
-
+const uploaded = ref(true);
 function handleFileUpload(event: any) {
   file.value = event.target.files[0];
+  uploaded.value = false;
 }
 
 async function sendFileToServer() {
@@ -61,4 +62,5 @@ export {
   getIpfsHashFromServer,
   handleFileUpload,
   sendFileToServer,
+  uploaded,
 };

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import {ref, onMounted, watch} from 'vue'
 import * as THREE from "three";
 import { TresCanvas } from "@tresjs/core";
 import { OrbitControls, useGLTF } from "@tresjs/cientos";
@@ -6,6 +7,20 @@ import { OrbitControls, useGLTF } from "@tresjs/cientos";
 import Card from "./Card.vue";
 import FileInput from "./FileInput.vue";
 import Canvas from "./Canvas.vue";
+import { handleFileUpload,  uploaded} from '../composables/useApi.ts'
+
+// const uploadedHome = ref(true);
+//
+// onMounted(()=>{
+//   console.log("Onmount ",uploaded.value )
+//   uploadedHome.value = uploaded.value;
+// })
+//
+// watch(uploaded, (value) => {
+//   console.log("Onchange ",uploaded.value )
+//   uploadedHome.value = value.value;
+// })
+
 </script>
 <template>
   <div class="container text-center">
@@ -30,7 +45,7 @@ import Canvas from "./Canvas.vue";
             @click="mint(12)"
             class="btn btn-lg btn-outline-primary mt-3"
             type="button"
-            disabled
+            :disabled="uploaded"
           >
             mint
           </button>
