@@ -1186,6 +1186,7 @@
       "npm:@tresjs/cientos",
       "npm:@tresjs/core",
       "npm:@tresjs/leches@latest",
+      "npm:marked@latest",
       "npm:three@latest",
       "npm:vue-router@4",
       "npm:vue@latest"

@@ -1,6 +1,6 @@
 import { useControls } from "@tresjs/leches";
 //@ts-ignore it its there
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { getTotalSupply, mint, setAttribute } from "../composables/usePsp34.ts";
 import {
   getFileFromServer,
@@ -10,7 +10,28 @@ import {
 const useLeches = () => {
   const totalSupplyRef = ref("-");
   const cidRef = ref("-");
-  useControls({
+  const modelsRef = ref([]);
+
+  const { models } = useControls({
+    models: {
+      value: "EmptyCube",
+      options: [],
+    },
+    getAllUploads: {
+      label: "getAllUploads",
+      type: "button",
+      size: "lg",
+      onClick: async () => {
+        const res = await fetch("http://localhost:8000/getAllUploads");
+        const json = await res.json();
+        let lechesA: { text: string; value: string }[] = [];
+        json.uploads.map((el: any) => {
+          lechesA.push({ text: el.filename, value: el.filename });
+        });
+        modelsRef.value = lechesA;
+        update();
+      },
+    },
     totalSupply: totalSupplyRef,
     cid: cidRef,
     getTotalSupply: {
@@ -62,20 +83,11 @@ const useLeches = () => {
         await getFileFromServer();
       },
     },
-    model: {
-      value: "EmptyCube",
-      options: [{
-        text: "EmptyCube",
-        value: "EmptyCube",
-      }, {
-        text: "Metal Gear Solid",
-        value: "metal-gear-solid",
-      }, {
-        text: "Legend of Zelda",
-        value: "legend-of-zelda",
-      }],
-    },
   });
+
+  function update() {
+    models.value.options = modelsRef.value;
+  }
 };
 
 export { useLeches };
