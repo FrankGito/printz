@@ -21,7 +21,8 @@ router.post("/upload", async (ctx) => {
 
   const filePath = `${uploadsDir}/${nextCount}_printz.glb`;
   //@ts-ignore it work that way ^^ usually I want the arrayBuffer
-  const content = await Deno.readFile(file);
+  // const content = await Deno.readFile(file);
+  const content = await file.arrayBuffer();
   const array = new Uint8Array(content);
   await Deno.writeFile(
     filePath,
@@ -74,6 +75,20 @@ router.get("/getGlb", async (ctx) => {
 
 router.get("/getGlbHash", async (ctx) => {
   const ipfsHash = await generateIpfsHash("./uploads/0_printz.glb");
+  ctx.response.headers.set("Content-Type", "text/plain");
+  ctx.response.body = ipfsHash;
+});
+
+router.get("/getLatestGlbHash", async (ctx) => {
+  const uploadsDir = "./uploads";
+  const files = Deno.readDirSync(uploadsDir);
+  const fileNames = Array.from(files).map((file) => file.name);
+  const fileNumbers = fileNames.map((name) => parseInt(name.split("_")[0]));
+  const maxFileNumber = Math.max(...fileNumbers);
+  const count = isNaN(maxFileNumber) ? 1 : maxFileNumber;
+  const filePath = `${uploadsDir}/${count}_printz.glb`;
+  //!TODO It generates a new one ^^ Have to call db
+  const ipfsHash = await generateIpfsHash(filePath);
   ctx.response.headers.set("Content-Type", "text/plain");
   ctx.response.body = ipfsHash;
 });
