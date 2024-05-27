@@ -5,11 +5,11 @@
 <h3 align="center">Printz</h3>
   <p align="center">
   <br />
-    <a href="#">Demo v0.0.1</a>
+    <a href="http://printz.surge.sh">Demo v0.0.1</a>
     ·
     <a href="https://youtu.be/QBlTSIQg1gU">Youtube</a>
     ·
-    <a href="">Repo</a>
+    <a href="https://github.com/frankgito/printz">Repo</a>
   </p>
 </div>
 
