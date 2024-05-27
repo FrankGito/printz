@@ -1,0 +1,4 @@
+
+CREATE USER frank WITH PASSWORD 'postgres';
+CREATE DATABASE testo;
+ALTER DATABASE testo OWNER TO frank;

@@ -1,3 +1,28 @@
+version: '3.9'
+
 services:
-  postgres:
-    
+
+  database:
+    image: postgres
+    restart: always
+    shm_size: 128mb
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - type: bind
+        source: database-init
+        target: /docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "--username=frank", "--dbname=testo"]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_period: 30s
+
+  backend:
+    build: ../backend
+    depends_on:
+      database:
+        condition: service_healthy
+    dns:
+      - 8.8.8.8

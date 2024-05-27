@@ -3,7 +3,7 @@ import { Client } from "jsr:@bartlomieju/postgres";
 const client = new Client({
   user: "frank",
   database: "testo",
-  hostname: "localhost",
+  hostname: "database", // docker-compose change
   port: 5432,
   password: "postgres",
 });
@@ -11,7 +11,7 @@ const client = new Client({
 async function insert_ipfs_data(tokenId: string, name: string, uri: string) {
   await client.connect();
   await client.queryArray(
-    `INSERT INTO ipfs_data (tokenId, name, uri) VALUES ('${tokenId}','${name}', '${uri}');`,
+    `INSERT INTO ipfs_data (tokenId, name, uri) VALUES ('${tokenId}','${name}', '${uri}');`, // TODO: fix sql injection vulnerability!!
   );
   client.end();
 }
