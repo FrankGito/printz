@@ -7,9 +7,9 @@ The Contract uses ink! version 5.
 The Contract uses test macros for testing.
 
 ## Files
-We are using interface to define the outcome,.  
-`./item/lib.rs` - contains reimplentation for PSP34 in ink version 5.
-`./item_sale/interfaces/lib.rs` - contains the Item Sale Interface
+We are using interface to define the outcomes.  
+`./item/lib.rs` - contains reimplentation for PSP34 in ink version 5.  
+`./item_sale/interfaces/lib.rs` - contains the Item Sale Interface  
 
 ## Story of Creation
 
